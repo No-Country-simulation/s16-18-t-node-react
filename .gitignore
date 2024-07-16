@@ -29,8 +29,6 @@ coverage
 out/
 build
 dist
-/prisma/migrations
-
 
 # Debug
 npm-debug.log*
