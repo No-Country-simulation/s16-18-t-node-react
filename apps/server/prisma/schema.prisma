@@ -1,0 +1,167 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  CLIENT
+  ADMIN
+  EMPLOYEE
+}
+
+enum TypeSale {
+  Sell
+  Buy
+  Refund
+}
+
+enum State {
+  PENDING
+  COMPLETE
+  REJECT
+}
+
+model User {
+  id       String @id @default(uuid())
+  email    String @unique
+  username String
+  password String
+  Role     Role   @default(CLIENT)
+
+  UserProduct   UserProduct[]
+  Wallet        Wallet[]
+  Sale          Sale[]
+  ProductReview ProductReview[]
+  Ticket        Ticket[]
+}
+
+model Wallet {
+  id     String @id @default(uuid())
+  userID String
+  Money  Float
+
+  User User @relation(fields: [userID], references: [id])
+}
+
+model Category {
+  id       String @id @default(uuid())
+  category String @unique
+
+  ProductCategory ProductCategory[]
+}
+
+model Product {
+  id          String  @id @default(uuid())
+  name        String
+  description String
+  price       Float
+  isActive    Boolean @default(true)
+
+  Keys            Keys[]
+  ProductReview   ProductReview[]
+  Offers          Offers[]
+  SaleDetails     SaleDetails[]
+  ProductCategory ProductCategory[]
+}
+
+model ProductCategory {
+  id         String @id @default(uuid())
+  categoryID String
+  productID  String
+
+  Product  Product  @relation(fields: [productID], references: [id])
+  Category Category @relation(fields: [categoryID], references: [id])
+}
+
+model Offers {
+  id                 String   @id @default(uuid())
+  productID          String
+  discountPorcentage Float?
+  startDate          DateTime @default(now()) @db.Date
+  finishDate         DateTime @db.Date
+
+  Product Product @relation(fields: [productID], references: [id])
+}
+
+model Keys {
+  id        String  @id @default(uuid())
+  key       String  @unique
+  productID String
+  enable    Boolean @default(true)
+  isUsed    Boolean @default(false)
+
+  UserProduct UserProduct[]
+
+  product Product @relation(fields: [productID], references: [id])
+}
+
+model UserProduct {
+  id     String @id @default(uuid())
+  userID String
+  keyID  String
+
+  User User @relation(fields: [userID], references: [id])
+  Keys Keys @relation(fields: [keyID], references: [id])
+}
+
+model Sale {
+  id     String   @id @default(uuid())
+  userID String
+  type   TypeSale
+  date   DateTime @default(now()) @db.Date
+  time   DateTime @default(now()) @db.Time()
+  total  Float
+
+  User        User          @relation(fields: [userID], references: [id])
+  SaleDetails SaleDetails[]
+}
+
+model SaleDetails {
+  id        String @id @default(uuid())
+  SaleID    String
+  productID String
+  quantity  Int
+  price     Float
+
+  Sale     Sale    @relation(fields: [SaleID], references: [id])
+  products Product @relation(fields: [productID], references: [id])
+}
+
+model ProductReview {
+  id        String  @id @default(uuid())
+  review    String?
+  rate      Int
+  userID    String
+  productID String
+
+  User    User    @relation(fields: [userID], references: [id])
+  Product Product @relation(fields: [productID], references: [id])
+}
+
+model Ticket {
+  id      String @id @default(uuid())
+  userID  String
+  message String
+  state   State
+
+  User User @relation(fields: [userID], references: [id])
+}
+
+model Company {
+  id       String  @id @default(uuid())
+  name     String
+  address  String
+  phone    String
+  logo     String?
+  isActive Boolean @default(true)
+}
