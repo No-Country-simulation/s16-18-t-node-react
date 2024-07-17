@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -14,154 +8,108 @@ datasource db {
 }
 
 enum Role {
-  CLIENT
+  DEFAULT
   ADMIN
-  EMPLOYEE
 }
 
-enum TypeSale {
-  Sell
-  Buy
-  Refund
+enum StatePassenger {
+  OK
+  CANCELLED
 }
 
-enum State {
+enum StateTravel {
   PENDING
-  COMPLETE
-  REJECT
+  STARTED
+  COMPLETED
+  CANCELLED
 }
 
 model User {
-  id       String @id @default(uuid())
-  email    String @unique
-  username String
-  password String
-  Role     Role   @default(CLIENT)
-
-  UserProduct   UserProduct[]
-  Wallet        Wallet[]
-  Sale          Sale[]
-  ProductReview ProductReview[]
-  Ticket        Ticket[]
+  id              String            @id @default(uuid())
+  email           String            @unique
+  password        String
+  isActive        Boolean           @default(true)
+  role            Role              @default(DEFAULT)
+  userDetail      UserDetail[]
+  preferenceAlert PreferenceAlert[]
+  car             Car[]
+  ratingsGiven    Rating[]          @relation(name: "DriverRelation")
+  ratingsReceived Rating[]          @relation(name: "PassengerRelation")
+  passengerTravel PassengerTravel[] @relation(name: "DriverRelation")
+  driverTravel    PassengerTravel[] @relation(name: "PassengerRelation")
 }
 
-model Wallet {
-  id     String @id @default(uuid())
+model UserDetail {
+  id     String  @id @default(uuid())
   userID String
-  Money  Float
+  dni    String
+  name   String
+  phone  String
+  avatar String?
 
-  User User @relation(fields: [userID], references: [id])
+  user User @relation(fields: [userID], references: [id])
 }
 
-model Category {
-  id       String @id @default(uuid())
-  category String @unique
+model PreferenceAlert {
+  id          String @id @default(uuid())
+  userID      String
+  origin      String
+  destination String
 
-  ProductCategory ProductCategory[]
+  user User @relation(fields: [userID], references: [id])
 }
 
-model Product {
-  id          String  @id @default(uuid())
-  name        String
-  description String
-  price       Float
-  isActive    Boolean @default(true)
-
-  Keys            Keys[]
-  ProductReview   ProductReview[]
-  Offers          Offers[]
-  SaleDetails     SaleDetails[]
-  ProductCategory ProductCategory[]
-}
-
-model ProductCategory {
-  id         String @id @default(uuid())
-  categoryID String
-  productID  String
-
-  Product  Product  @relation(fields: [productID], references: [id])
-  Category Category @relation(fields: [categoryID], references: [id])
-}
-
-model Offers {
-  id                 String   @id @default(uuid())
-  productID          String
-  discountPorcentage Float?
-  startDate          DateTime @default(now()) @db.Date
-  finishDate         DateTime @db.Date
-
-  Product Product @relation(fields: [productID], references: [id])
-}
-
-model Keys {
-  id        String  @id @default(uuid())
-  key       String  @unique
-  productID String
-  enable    Boolean @default(true)
-  isUsed    Boolean @default(false)
-
-  UserProduct UserProduct[]
-
-  product Product @relation(fields: [productID], references: [id])
-}
-
-model UserProduct {
-  id     String @id @default(uuid())
-  userID String
-  keyID  String
-
-  User User @relation(fields: [userID], references: [id])
-  Keys Keys @relation(fields: [keyID], references: [id])
-}
-
-model Sale {
-  id     String   @id @default(uuid())
-  userID String
-  type   TypeSale
-  date   DateTime @default(now()) @db.Date
-  time   DateTime @default(now()) @db.Time()
-  total  Float
-
-  User        User          @relation(fields: [userID], references: [id])
-  SaleDetails SaleDetails[]
-}
-
-model SaleDetails {
-  id        String @id @default(uuid())
-  SaleID    String
-  productID String
-  quantity  Int
-  price     Float
-
-  Sale     Sale    @relation(fields: [SaleID], references: [id])
-  products Product @relation(fields: [productID], references: [id])
-}
-
-model ProductReview {
-  id        String  @id @default(uuid())
-  review    String?
-  rate      Int
-  userID    String
-  productID String
-
-  User    User    @relation(fields: [userID], references: [id])
-  Product Product @relation(fields: [productID], references: [id])
-}
-
-model Ticket {
-  id      String @id @default(uuid())
-  userID  String
-  message String
-  state   State
-
-  User User @relation(fields: [userID], references: [id])
-}
-
-model Company {
+model Car {
   id       String  @id @default(uuid())
-  name     String
-  address  String
-  phone    String
-  logo     String?
+  userID   String
+  brand    String
+  color    String
+  capacity String
+  photo    String
+  patent   String
   isActive Boolean @default(true)
+
+  user User @relation(fields: [userID], references: [id])
+}
+
+model Rating {
+  id          String @id @default(uuid())
+  driverID    String
+  passengerID String
+  rating      Int
+  review      String
+
+  driver    User @relation(name: "DriverRelation", fields: [driverID], references: [id])
+  passenger User @relation(name: "PassengerRelation", fields: [passengerID], references: [id])
+}
+
+model Travel {
+  id               String             @id @default(uuid())
+  origin           String
+  destination      String
+  startDate        DateTime           @db.Date()
+  hour             DateTime           @db.Time()
+  isActive         Boolean            @default(true)
+  state            StateTravel        @default(PENDING)
+  PreferenceTravel PreferenceTravel[]
+}
+
+model PreferenceTravel {
+  id          String  @id @default(uuid())
+  smoke       Boolean @default(true)
+  pets        Boolean @default(true)
+  description String
+  travelID    String
+
+  travel Travel @relation(fields: [travelID], references: [id])
+}
+
+model PassengerTravel {
+  id          String         @id @default(uuid())
+  passengerID String
+  driverID    String
+  state       StatePassenger @default(OK)
+
+  driver    User @relation(name: "DriverRelation", fields: [driverID], references: [id])
+  passenger User @relation(name: "PassengerRelation", fields: [passengerID], references: [id])
 }
