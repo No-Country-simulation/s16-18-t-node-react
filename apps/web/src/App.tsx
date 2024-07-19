@@ -1,18 +1,16 @@
-import { Link, Route, Routes } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import './App.css'
 import LoginForm from './components/LoginForm'
 import RegisterForm from './components/RegisterForm'
 import Home from './components/Home'
+import Navbar from './components/ui/Navbar'
 
 function App() {
 
+
   return (
     <>
-      <nav className='flex gap-5'>
-        <Link to='/'>Home</Link>
-        <Link to='/login'>Iniciar Sesión</Link>
-        <Link to='/register'>Registrarme</Link>
-      </nav>
+      <Navbar />
 
       <Routes>
         <Route path='/' element={<Home />}></Route>
