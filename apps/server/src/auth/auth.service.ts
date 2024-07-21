@@ -17,15 +17,9 @@ export class AuthService {
       const userFound = await this.findByEmail(userData.email)
       const userFoundByDni = await this.findByDni(userData.dni)
 
-      if (userFound)
-        throw new ConflictException(
-          `User with email ${userData.email} already exists`,
-        )
+      if (userFound) throw new ConflictException(`User with email ${userData.email} already exists`)
 
-      if (userFoundByDni)
-        throw new ConflictException(
-          `User with dni ${userData.dni} already exists`,
-        )
+      if (userFoundByDni) throw new ConflictException(`User with dni ${userData.dni} already exists`)
 
       const hashedPassword = hashSync(password, 10)
 
@@ -34,15 +28,14 @@ export class AuthService {
           data: { email: userData.email, password: hashedPassword },
         })
 
-        const { id, userID, ...userDetail } =
-          await prismaClient.userDetail.create({
-            data: {
-              userID: newUser.id,
-              dni: userData.dni,
-              name: userData.name,
-              phone: userData.phone_number,
-            },
-          })
+        const { id, userID, ...userDetail } = await prismaClient.userDetail.create({
+          data: {
+            userID: newUser.id,
+            dni: userData.dni,
+            name: userData.name,
+            phone: userData.phone_number,
+          },
+        })
 
         return {
           id: newUser.id,
