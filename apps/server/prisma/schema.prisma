@@ -89,6 +89,7 @@ model Travel {
   destination      String
   startDate        DateTime           @db.Date()
   hour             DateTime           @db.Time()
+  price            Int            @default(0)
   isActive         Boolean            @default(true)
   state            StateTravel        @default(PENDING)
   PreferenceTravel PreferenceTravel[]
