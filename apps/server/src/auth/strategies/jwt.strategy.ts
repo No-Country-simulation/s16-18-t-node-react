@@ -15,14 +15,14 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     configService: ConfigService,
   ) {
     super({
-      secretOrKey: configService.get('SECRET_JWT_KEY'),
+      secretOrKey: configService.get('JWT_SECRET_KEY'),
       jwtFromRequest: ExtractJwt.fromExtractors([JwtStrategy.extractJWTFromCookies]),
     })
   }
 
   private static extractJWTFromCookies(req: Request): string | null {
-    if (req.cookies && req.cookies.acces_token) {
-      return req.cookies.acces_token
+    if (req.cookies && req.cookies.access_token) {
+      return req.cookies.access_token
     }
     return null
   }

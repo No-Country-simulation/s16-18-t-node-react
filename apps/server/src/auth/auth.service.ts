@@ -13,20 +13,20 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async create(createUserDto: CreateUserDto): Promise<User> {
+  async create(createUserDto: CreateUserDto): Promise<{ user: User; token: string }> {
     const { password, ...userData } = createUserDto
 
     try {
-      const userFound = await this.findByEmail(userData.email)
+      const userFoundByEmail = await this.findByEmail(userData.email)
       const userFoundByDni = await this.findByDni(userData.dni)
 
-      if (userFound) throw new ConflictException(`User with email ${userData.email} already exists`)
+      if (userFoundByEmail) throw new ConflictException(`User with email ${userData.email} already exists`)
 
       if (userFoundByDni) throw new ConflictException(`User with dni ${userData.dni} already exists`)
 
       const hashedPassword = hashSync(password, 10)
 
-      const result = await this.prisma.$transaction(async (prismaClient) => {
+      const user = await this.prisma.$transaction(async (prismaClient) => {
         const newUser = await prismaClient.user.create({
           data: { email: userData.email, password: hashedPassword },
         })
@@ -48,13 +48,15 @@ export class AuthService {
         }
       })
 
-      return result
+      const token = this.generateJwt({ id: user.id })
+
+      return { user, token }
     } catch (error) {
       handleErrorException(error)
     }
   }
 
-  async login(loginUserDto: LoginUserDto): Promise<User & { token: string }> {
+  async login(loginUserDto: LoginUserDto): Promise<{ user: User; token: string }> {
     const { email, password } = loginUserDto
 
     const userFound = await this.findByEmail(email)
@@ -70,10 +72,12 @@ export class AuthService {
     const token = this.generateJwt({ id: userFound.id })
 
     return {
-      ...userDetail,
-      email: userFound.email,
-      id: userFound.id,
-      role: userFound.role,
+      user: {
+        ...userDetail,
+        email: userFound.email,
+        id: userFound.id,
+        role: userFound.role,
+      },
       token,
     }
   }
