@@ -12,3 +12,9 @@ export interface LoginFormValues {
     password: string
 }
 
+
+export interface Trip {
+    id: number,
+    origin: string,
+    destination: string
+}

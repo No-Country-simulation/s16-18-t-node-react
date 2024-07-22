@@ -3,7 +3,7 @@ import './App.css'
 import LoginForm from './components/LoginForm'
 import RegisterForm from './components/RegisterForm'
 import Home from './components/Home'
-import Navbar from './components/ui/Navbar'
+import Navbar from './components/Navbar'
 
 function App() {
 
