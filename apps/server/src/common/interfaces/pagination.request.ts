@@ -1,4 +1,4 @@
 export interface PaginationRequest {
-    limit?: number;
-    size?: number;
+  limit?: number
+  size?: number
 }
