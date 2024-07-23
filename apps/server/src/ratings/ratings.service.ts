@@ -33,7 +33,7 @@ export class RatingsService {
       .findMany({
         where: {
           rating,
-          review
+          review,
         },
         skip: (size - 1) * limit,
         take: limit,
@@ -59,7 +59,7 @@ export class RatingsService {
       })
       .catch((e) => handleErrorException(e))
 
-    const average = this.averageRating(ratings);
+    const average = this.averageRating(ratings)
     return { average }
   }
 
@@ -69,7 +69,7 @@ export class RatingsService {
         where: { passengerID },
       })
       .catch((e) => handleErrorException(e))
-    const average = this.averageRating(ratings);
+    const average = this.averageRating(ratings)
     return { average }
   }
 
@@ -103,8 +103,7 @@ export class RatingsService {
   private averageRating(ratings: RatingInterface[]) {
     const sumRating = ratings.reduce((previousValue: number, currentValue: RatingInterface) => {
       return previousValue + currentValue.rating
-    }, 0);
+    }, 0)
     return parseFloat((sumRating / ratings.length).toFixed(2));
   }
-
 }

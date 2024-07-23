@@ -9,7 +9,7 @@ import { PaginationRatingDto } from './dto/pagination-rating.dto'
 
 @Controller('ratings')
 export class RatingsController {
-  constructor(private readonly ratingsService: RatingsService) { }
+  constructor(private readonly ratingsService: RatingsService) {}
 
   @Post()
   @Auth()
@@ -38,7 +38,6 @@ export class RatingsController {
   findOneAveragePassenger(@Param('passengerID', ParseUUIDPipe) passengerID: string) {
     return this.ratingsService.findOneAveragePassenger(passengerID)
   }
-
 
   @Get(':id')
   @Auth()
