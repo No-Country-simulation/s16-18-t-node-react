@@ -3,11 +3,12 @@ import { CreateRatingDto } from './dto/create-rating.dto'
 import { UpdateRatingDto } from './dto/update-rating.dto'
 import { handleErrorException } from 'src/common/utils'
 import { PrismaService } from 'src/prisma/prisma.service'
-import { PaginationDto } from 'src/common/dto/pagination.dto'
+import { PaginationRatingDto } from './dto/pagination-rating.dto'
+import { RatingInterface } from './interfaces/rating.interface'
 
 @Injectable()
 export class RatingsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) { }
 
   async create(createRatingDto: CreateRatingDto, passengerID: string) {
     try {
@@ -25,11 +26,15 @@ export class RatingsService {
     }
   }
 
-  async findAll(pagination: PaginationDto) {
-    const { limit = 10, size = 1 } = pagination
+  async findAll(pagination: PaginationRatingDto) {
+    const { limit = 10, size = 1, rating, review } = pagination
+
     return await this.prisma.rating
       .findMany({
-        // where: { },
+        where: {
+          rating,
+          review
+        },
         skip: (size - 1) * limit,
         take: limit,
       })
@@ -45,6 +50,27 @@ export class RatingsService {
     if (!rating) throw new NotFoundException('La clasificación no existe')
 
     return rating
+  }
+
+  async findOneAverageDriver(driverID: string) {
+    const ratings = await this.prisma.rating
+      .findMany({
+        where: { driverID },
+      })
+      .catch((e) => handleErrorException(e))
+
+    const average = this.averageRating(ratings);
+    return { average }
+  }
+
+  async findOneAveragePassenger(passengerID: string) {
+    const ratings = await this.prisma.rating
+      .findMany({
+        where: { passengerID },
+      })
+      .catch((e) => handleErrorException(e))
+    const average = this.averageRating(ratings);
+    return { average }
   }
 
   async update(id: string, updateRatingDto: UpdateRatingDto) {
@@ -73,4 +99,12 @@ export class RatingsService {
       handleErrorException(e)
     }
   }
+
+  private averageRating(ratings: RatingInterface[]) {
+    const sumRating = ratings.reduce((previousValue: number, currentValue: RatingInterface) => {
+      return previousValue + currentValue.rating
+    }, 0);
+    return parseFloat((sumRating / ratings.length).toFixed(2));
+  }
+
 }

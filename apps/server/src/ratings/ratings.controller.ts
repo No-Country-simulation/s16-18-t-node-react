@@ -5,11 +5,11 @@ import { UpdateRatingDto } from './dto/update-rating.dto'
 import { ApiOperation } from '@nestjs/swagger'
 import { Auth, GetUser } from 'src/auth/decorator'
 import { User } from 'src/auth/interfaces'
-import { PaginationDto } from 'src/common/dto/pagination.dto'
+import { PaginationRatingDto } from './dto/pagination-rating.dto'
 
 @Controller('ratings')
 export class RatingsController {
-  constructor(private readonly ratingsService: RatingsService) {}
+  constructor(private readonly ratingsService: RatingsService) { }
 
   @Post()
   @Auth()
@@ -21,9 +21,24 @@ export class RatingsController {
   @Get()
   @Auth()
   @ApiOperation({ description: 'This find one rating' })
-  findAll(@Query() paginationDto: PaginationDto) {
+  findAll(@Query() paginationDto: PaginationRatingDto) {
     return this.ratingsService.findAll(paginationDto)
   }
+
+  @Get(':driverID/average/driver')
+  @Auth()
+  @ApiOperation({ description: 'This find average rating of one user' })
+  findOneAverageDriver(@Param('driverID', ParseUUIDPipe) driverID: string) {
+    return this.ratingsService.findOneAverageDriver(driverID)
+  }
+
+  @Get(':passengerID/average/passenger')
+  @Auth()
+  @ApiOperation({ description: 'This find average rating of one user' })
+  findOneAveragePassenger(@Param('passengerID', ParseUUIDPipe) passengerID: string) {
+    return this.ratingsService.findOneAveragePassenger(passengerID)
+  }
+
 
   @Get(':id')
   @Auth()
