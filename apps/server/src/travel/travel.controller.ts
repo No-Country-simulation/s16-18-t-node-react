@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common'
+import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Post, Query } from '@nestjs/common'
 
 import { TravelService } from './travel.service'
 import { CreateTravelDto, TravelQueryParamsDto } from './dto'
@@ -22,5 +22,25 @@ export class TravelController {
   @Post('create')
   async create(@Body() createTravelDto: CreateTravelDto) {
     return await this.travelService.create(createTravelDto)
+  }
+
+  @ApiOperation({ description: 'This create a passenger' })
+  @Auth()
+  @Post('create-passenger/:travelID')
+  async createPassenger(@Param('travelID', ParseUUIDPipe) travelID: string, @GetUser() user: User) {
+    return await this.travelService.NewPassenger(travelID, user)
+  }
+
+  @ApiOperation({ description: 'This find disponibility' })
+  @Get('passengerDisponibility/:id')
+  async findDisponibility(@Param('id', ParseUUIDPipe) travelID: string) {
+    return await this.travelService.findDisponibilityTravel(travelID)
+  }
+
+  @ApiOperation({ description: 'This is for cancell travel for passenger' })
+  @Auth()
+  @Delete('cancell-passenger/:travelID')
+  async cancellTravelPassenger(@Param('travelID', ParseUUIDPipe) travelID: string, @GetUser() user: User) {
+    return await this.travelService.cancelleTravelPassenger(user, travelID)
   }
 }

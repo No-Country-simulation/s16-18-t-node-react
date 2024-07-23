@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { IsString, IsUrl } from 'class-validator'
+import { IsNumber, IsString, IsUrl } from 'class-validator'
 
 export class CreateCarDto {
   @ApiProperty({
@@ -26,8 +26,8 @@ export class CreateCarDto {
     nullable: false,
     minLength: 1,
   })
-  @IsString()
-  capacity: string
+  @IsNumber()
+  capacity: number
 
   @ApiProperty({
     example: 'http://...',

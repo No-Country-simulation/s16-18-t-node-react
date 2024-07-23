@@ -16,6 +16,7 @@ import { RatingsModule } from './ratings/ratings.module'
     AuthModule,
     CarModule,
     RatingsModule,
+    TravelModule,
   ],
   controllers: [AppController],
   providers: [AppService],
