@@ -12,7 +12,7 @@ export class CarController {
   constructor(private readonly carService: CarService) {}
 
   @ApiOperation({
-    description: 'This endpoint is for create new Car', //! falta testear
+    description: 'This endpoint is for create new Car',
   })
   @Post()
   @Auth()
@@ -21,7 +21,7 @@ export class CarController {
   }
 
   @ApiOperation({
-    description: 'This endpoint is for find all Car', //! falta testear
+    description: 'This endpoint is for find all Car',
   })
   @Get()
   @Auth()
@@ -30,16 +30,18 @@ export class CarController {
   }
 
   @ApiOperation({
-    description: 'This endpoint is for update a Car', //! falta testear
+    description: 'This endpoint is for update a Car',
   })
   @Patch()
+  @Auth()
   async update(@Body() updateCarDto: UpdateCarDto) {
     return await this.carService.update(updateCarDto)
   }
 
   @ApiOperation({
-    description: 'This endpoint is for "remove" a Car', //! falta testear
+    description: 'This endpoint is for "remove" a Car',
   })
+  @Auth()
   @Delete('remove/:id')
   async updateIsActive(@Param('id', ParseUUIDPipe) id: string) {
     return await this.carService.isActive(id)
