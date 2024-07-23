@@ -1,8 +1,10 @@
-import { Controller, Get, Query } from '@nestjs/common'
+import { Body, Controller, Get, Post, Query } from '@nestjs/common'
 
 import { TravelService } from './travel.service'
-import { TravelQueryParamsDto } from './dto'
+import { CreateTravelDto, TravelQueryParamsDto } from './dto'
 import { ApiOperation, ApiTags } from '@nestjs/swagger'
+import { Auth, GetUser } from '../auth/decorator'
+import { User } from '../auth/interfaces'
 
 @ApiTags('Travel')
 @Controller('travel')
@@ -13,5 +15,12 @@ export class TravelController {
   @Get('search')
   async findTravels(@Query() travelQueryParamsDto: TravelQueryParamsDto) {
     return await this.travelService.findTravelsByQueryParams(travelQueryParamsDto)
+  }
+
+  @ApiOperation({ description: 'This create a travel' })
+  @Auth()
+  @Post('create')
+  async create(@Body() createTravelDto: CreateTravelDto) {
+    return await this.travelService.create(createTravelDto)
   }
 }
