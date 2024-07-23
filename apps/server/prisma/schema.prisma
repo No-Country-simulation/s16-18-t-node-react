@@ -70,6 +70,7 @@ model Car {
   isActive Boolean @default(true)
 
   user User @relation(fields: [userID], references: [id])
+  travel Travel[]
 }
 
 model Rating {
@@ -93,15 +94,24 @@ model Travel {
   isActive         Boolean            @default(true)
   state            StateTravel        @default(PENDING)
   PreferenceTravel PreferenceTravel[]
+  carID            String
+
+  car Car @relation(fields: [carID], references: [id])
 }
 
+model Preference {
+  id String @id @default(uuid())
+  name String
+  state Boolean @default(true) 
+
+  PreferenceTravel PreferenceTravel[]
+}
 model PreferenceTravel {
-  id          String  @id @default(uuid())
-  smoke       Boolean @default(true)
-  pets        Boolean @default(true)
-  description String
+  id          String @id @default(uuid())
+  preferenceID String
   travelID    String
 
+  preference Preference @relation(fields: [preferenceID], references: [id])
   travel Travel @relation(fields: [travelID], references: [id])
 }
 
