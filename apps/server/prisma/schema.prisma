@@ -35,8 +35,7 @@ model User {
   car             Car[]
   ratingsGiven    Rating[]          @relation(name: "DriverRelation")
   ratingsReceived Rating[]          @relation(name: "PassengerRelation")
-  passengerTravel PassengerTravel[] @relation(name: "DriverRelation")
-  driverTravel    PassengerTravel[] @relation(name: "PassengerRelation")
+  passengerTravel PassengerTravel[]
 }
 
 model UserDetail {
@@ -64,12 +63,12 @@ model Car {
   userID   String
   brand    String
   color    String
-  capacity String
+  capacity Int
   photo    String
   patent   String
   isActive Boolean @default(true)
 
-  user User @relation(fields: [userID], references: [id])
+  user   User     @relation(fields: [userID], references: [id])
   travel Travel[]
 }
 
@@ -90,37 +89,39 @@ model Travel {
   destination      String
   startDate        DateTime           @db.Date()
   hour             DateTime           @db.Time()
-  price            Int            @default(0)
+  price            Int                @default(0)
   isActive         Boolean            @default(true)
   state            StateTravel        @default(PENDING)
   PreferenceTravel PreferenceTravel[]
   carID            String
 
-  car Car @relation(fields: [carID], references: [id])
+  car             Car               @relation(fields: [carID], references: [id])
+  PassengerTravel PassengerTravel[]
 }
 
 model Preference {
-  id String @id @default(uuid())
-  name String
-  state Boolean @default(true) 
+  id    String  @id @default(uuid())
+  name  String
+  state Boolean @default(true)
 
   PreferenceTravel PreferenceTravel[]
 }
+
 model PreferenceTravel {
-  id          String @id @default(uuid())
+  id           String @id @default(uuid())
   preferenceID String
-  travelID    String
+  travelID     String
 
   preference Preference @relation(fields: [preferenceID], references: [id])
-  travel Travel @relation(fields: [travelID], references: [id])
+  travel     Travel     @relation(fields: [travelID], references: [id])
 }
 
 model PassengerTravel {
   id          String         @id @default(uuid())
   passengerID String
-  driverID    String
+  travelID    String
   state       StatePassenger @default(OK)
 
-  driver    User @relation(name: "DriverRelation", fields: [driverID], references: [id])
-  passenger User @relation(name: "PassengerRelation", fields: [passengerID], references: [id])
+  travel    Travel @relation(fields: [travelID], references: [id])
+  passenger User   @relation(fields: [passengerID], references: [id])
 }
