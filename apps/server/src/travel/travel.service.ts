@@ -1,10 +1,13 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common'
+import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common'
 
 import { User } from '../auth/interfaces'
 import { CarService } from '../car/car.service'
 import { PrismaService } from '../prisma/prisma.service'
 import { CreateTravelDto, TravelQueryParamsDto } from './dto'
 import { getDateWithTime, getFormatedPrice, getSeparatedDate } from './utils'
+import { handleErrorException } from 'src/common/utils'
+import { ok } from 'assert'
+import { $Enums } from '@prisma/client'
 
 @Injectable()
 export class TravelService {
@@ -84,5 +87,91 @@ export class TravelService {
     })
 
     return travel
+  }
+
+  async NewPassenger(travelID: string, user: User) {
+    try {
+      const repitePassenger = await this.findPassengerByID(user.id, travelID)
+      if (repitePassenger) {
+        if (repitePassenger.state === 'OK') throw new ConflictException('Already registed')
+        if (repitePassenger.state === 'CANCELLED') {
+          return await this.changeStatePassenger(user.id, travelID, 'OK')
+        }
+      }
+      const capacity = await this.findDisponibilityTravel(travelID)
+      if (capacity === 0) throw new ConflictException('There are no hundreds available')
+
+      return await this.prisma.passengerTravel.create({
+        data: {
+          passengerID: user.id,
+          travelID,
+        },
+      })
+    } catch (error) {
+      handleErrorException(error)
+    }
+  }
+
+  async findDisponibilityTravel(travelID: string) {
+    const { carID } = await this.findTravelByID(travelID)
+    const { capacity } = await this.carService.findForID(carID)
+
+    const cantPassenger = await this.prisma.passengerTravel.findMany({
+      where: {
+        travelID,
+        state: 'OK',
+      },
+    })
+
+    const restCapacity = capacity - cantPassenger.length
+
+    return restCapacity
+  }
+
+  async findTravelByID(travelID: string) {
+    return await this.prisma.travel
+      .findUnique({
+        where: { id: travelID },
+      })
+      .catch((e) => handleErrorException(e))
+  }
+
+  async findPassengerByID(passengerID: string, travelID: string) {
+    return await this.prisma.passengerTravel
+      .findFirst({
+        where: {
+          passengerID,
+          travelID,
+        },
+      })
+      .catch((e) => handleErrorException(e))
+  }
+
+  async cancelleTravelPassenger(user: User, travelID: string) {
+    const { id } = await this.findPassengerByID(user.id, travelID)
+    return this.prisma.passengerTravel.update({
+      where: {
+        id,
+        travelID,
+        passengerID: user.id,
+      },
+      data: {
+        state: 'CANCELLED',
+      },
+    })
+  }
+
+  async changeStatePassenger(passengerID: string, travelID: string, state: $Enums.StatePassenger) {
+    const { id } = await this.findPassengerByID(passengerID, travelID)
+
+    return await this.prisma.passengerTravel.update({
+      where: {
+        id,
+        passengerID,
+      },
+      data: {
+        state: state,
+      },
+    })
   }
 }
