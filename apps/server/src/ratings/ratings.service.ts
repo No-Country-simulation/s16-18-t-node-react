@@ -8,7 +8,7 @@ import { RatingInterface } from './interfaces/rating.interface'
 
 @Injectable()
 export class RatingsService {
-  constructor(private readonly prisma: PrismaService) { }
+  constructor(private readonly prisma: PrismaService) {}
 
   async create(createRatingDto: CreateRatingDto, passengerID: string) {
     try {
@@ -104,6 +104,6 @@ export class RatingsService {
     const sumRating = ratings.reduce((previousValue: number, currentValue: RatingInterface) => {
       return previousValue + currentValue.rating
     }, 0)
-    return parseFloat((sumRating / ratings.length).toFixed(2));
+    return parseFloat((sumRating / ratings.length).toFixed(2))
   }
 }

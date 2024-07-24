@@ -7,8 +7,8 @@ import { AuthModule } from './auth/auth.module'
 import { CarModule } from './car/car.module'
 import { TravelModule } from './travel/travel.module'
 import { RatingsModule } from './ratings/ratings.module'
-import { SeedersModule } from './seeders/seeders.module';
-import { PreferencesModule } from './preferences/preferences.module';
+import { SeedersModule } from './seeders/seeders.module'
+import { PreferencesModule } from './preferences/preferences.module'
 
 @Module({
   imports: [
@@ -25,4 +25,4 @@ import { PreferencesModule } from './preferences/preferences.module';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}

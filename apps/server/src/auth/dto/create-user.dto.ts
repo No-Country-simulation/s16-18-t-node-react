@@ -25,7 +25,6 @@ export class CreateUserDto {
   @IsEnum($Enums.GenderUser)
   readonly gender: $Enums.GenderUser
 
-
   @ApiProperty({
     example: '+569 33442211',
     description: 'The user phone number',

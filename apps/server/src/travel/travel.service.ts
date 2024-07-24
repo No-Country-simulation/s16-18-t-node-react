@@ -15,7 +15,7 @@ export class TravelService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly carService: CarService,
-  ) { }
+  ) {}
 
   async findTravelsByQueryParams(travelQueryParamsDto: TravelQueryParamsDto) {
     const { destination = '', hour, origin = '', min_price, max_price, start_date, state, currency, locale } = travelQueryParamsDto
@@ -50,8 +50,8 @@ export class TravelService {
   }
 
   async create(createTravelDto: CreateTravelDto, user: User) {
-    const { hour, start_date, carId, preferences, ...travelData } = createTravelDto;
-    await this.validatePreferenceFemale(preferences, user);
+    const { hour, start_date, carId, preferences, ...travelData } = createTravelDto
+    await this.validatePreferenceFemale(preferences, user)
 
     const fullDateFromDate = start_date ? new Date(start_date) : new Date()
     const fullDateFromTime = getDateWithTime(hour)
@@ -66,14 +66,13 @@ export class TravelService {
           hour: fullDateFromTime,
           carID: carFound.id,
         },
-      });
-
+      })
 
       await prismaClient.preferenceTravel.createMany({
         data: preferences.map((_) => ({
           preferenceID: _.preferenceID,
           travelID: newTravel.id,
-          state: _.state
+          state: _.state,
         })),
       })
 
@@ -195,15 +194,18 @@ export class TravelService {
   }
 
   private async validatePreferenceFemale(preferencesDto: CreatePreferenceTravelDto[], passenger: User) {
-    const preferences = await Promise.all(preferencesDto.map(_ => this.prisma.preference.findFirst({
-      where: { id: _.preferenceID },
-    })));
+    const preferences = await Promise.all(
+      preferencesDto.map((_) =>
+        this.prisma.preference.findFirst({
+          where: { id: _.preferenceID },
+        }),
+      ),
+    )
 
-    preferences.forEach(_ => {
-      const data = preferencesDto.find(preference => preference.preferenceID === _.id)
+    preferences.forEach((_) => {
+      const data = preferencesDto.find((preference) => preference.preferenceID === _.id)
       if (DefaultPreference.FEMALE === _.name && data.state) {
-        if (passenger.gender === "MALE")
-          throw new BadRequestException("El pasajero no puede ser un hombre en un viaje para mujeres");
+        if (passenger.gender === 'MALE') throw new BadRequestException('El pasajero no puede ser un hombre en un viaje para mujeres')
       }
     })
   }

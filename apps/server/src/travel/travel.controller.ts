@@ -9,7 +9,7 @@ import { User } from '../auth/interfaces'
 @ApiTags('Travel')
 @Controller('travel')
 export class TravelController {
-  constructor(private readonly travelService: TravelService) { }
+  constructor(private readonly travelService: TravelService) {}
 
   @ApiOperation({ description: 'This find all travels with optional query params' })
   @Get('search')

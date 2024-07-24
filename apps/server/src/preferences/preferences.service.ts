@@ -1,16 +1,12 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { PaginationDto } from 'src/common/dto/pagination.dto';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { PaginationPreferenceDto } from './dto/pagination-preference.dto';
-import { handleErrorException } from 'src/common/utils';
+import { Injectable, NotFoundException } from '@nestjs/common'
+import { PaginationDto } from 'src/common/dto/pagination.dto'
+import { PrismaService } from 'src/prisma/prisma.service'
+import { PaginationPreferenceDto } from './dto/pagination-preference.dto'
+import { handleErrorException } from 'src/common/utils'
 
 @Injectable()
 export class PreferencesService {
-  constructor(
-    private readonly prisma: PrismaService,
-  ) { }
-
-
+  constructor(private readonly prisma: PrismaService) {}
 
   async findAll(pagination: PaginationPreferenceDto) {
     const { limit = 10, size = 1, name } = pagination
@@ -36,5 +32,4 @@ export class PreferencesService {
 
     return rating
   }
-
 }

@@ -10,5 +10,3 @@ export interface User {
   avatar: string
   gender: $Enums.GenderUser
 }
-
-
