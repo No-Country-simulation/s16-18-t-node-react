@@ -174,4 +174,29 @@ export class TravelService {
       },
     })
   }
+
+  async findAllPassenger(travelID: string) {
+    const consult = await this.prisma.passengerTravel.findMany({
+      where: {
+        state: 'OK',
+        travelID: travelID,
+      },
+      select: {
+        passenger: {
+          select: {
+            userDetail: {
+              select: {
+                name: true,
+                avatar: true,
+              },
+            },
+          },
+        },
+      },
+    })
+
+    const passenger = consult.flatMap((a) => a.passenger.userDetail)
+
+    return passenger
+  }
 }
