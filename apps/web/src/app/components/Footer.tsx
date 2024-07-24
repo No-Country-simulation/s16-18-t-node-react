@@ -6,7 +6,7 @@ import { HomeIcon, BellIcon, } from '@icons'
 export const Footer = ({ className }: { className?: string }) => {
   return (
     <footer className={cn(
-      "flex items-center justify-between bg-[#D9DBE9] sticky bottom-0 w-full py-5",
+      "flex items-center justify-between bg-[#D9DBE9] fixed bottom-0 py-5 w-full",
       className
     )}>
 
