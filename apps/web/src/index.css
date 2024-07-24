@@ -11,28 +11,32 @@
 @layer base {
   
   html{
-    background-color: '#FFFFFF';  
+    background-color: '#FFFFFF';
   }
 
+
   h1 {
-    @apply font-medium text-2xl
+    @apply text-base font-normal
   }
 
   h2 {
-    @apply font-bold
+    @apply text-base font-semibold
+  }
+
+  h3 {
+    @apply text-secondary font-medium
   }
 
   h1,
   h2,
-  h3,
   h4,
   h5,
   h6
   {
-    @apply text-title
+    @apply text-primary
   }
 
   p {
-    @apply font-medium text-paragraph 
+    @apply font-normal text-xs text-secondary 
   }
 }
