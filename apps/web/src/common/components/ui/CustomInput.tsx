@@ -8,8 +8,8 @@ interface Props extends InputProps {
   icon: () => JSX.Element
   searchButton?: boolean
   title: string
-  handleClick: () => void
-  handleChange: () => void
+  handleClick?: () => void
+  handleChange?: () => void
 }
 
 export const CustomInput = ({ handleChange, handleClick, icon, searchButton, title, className, ...props }: Props) => {

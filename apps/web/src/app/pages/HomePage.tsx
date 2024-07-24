@@ -1,11 +1,13 @@
-import { MapPointerIcon } from '@/common/components/icons'
-import { TravelCard } from '@/travel/components/TravelCard'
+import { MapPointerIcon } from '@icons'
 import { CustomInput } from '@ui'
+
+import { TravelGrid } from '@/travel/components/TravelGrid'
 
 export const HomePage = () => {
   return (
     <main>
       <div className="space-y-4">
+
         <h2>Busca tu viaje</h2>
 
         <CustomInput
@@ -17,17 +19,9 @@ export const HomePage = () => {
 
       </div>
 
-      <h2 className="pt-8 pb-4">Proximo viajes</h2>
+      <h2 className="pt-8 pb-4">Próximos viajes</h2>
 
-      <TravelCard
-        availableSeats={4}
-        origin='San Fernando, Chilessssssssssssssssssss'
-        destination='Rancagua, Chilesfddddddddddddddddddddd'
-        driverImage='notfound'
-        driverName='Manuel'
-        driverRating='4'
-        startDate={'2024-07-23'}
-      />
+      <TravelGrid />
 
     </main>
   )
