@@ -1,4 +1,4 @@
-import { Calendar, MapPointerIcon, UserIcon } from "@icons"
+import { CalendarIcon, MapPointerIcon, UserIcon } from "@icons"
 import { Avatar } from "@ui"
 
 interface Props {
@@ -41,7 +41,7 @@ export const TravelCard = ({ origin, destination, driverImage, driverRating, sta
           <h3 className="text-xs">FECHA</h3>
 
           <div className="flex items-center gap-2">
-            <Calendar />
+            <CalendarIcon />
             <p>{startDate}</p>
           </div>
         </div>
