@@ -1,23 +1,19 @@
-import { Route, Routes } from 'react-router-dom'
-import './App.css'
-import LoginForm from './components/LoginForm'
-import RegisterForm from './components/RegisterForm'
-import Home from './components/Home'
-import Navbar from './components/Navbar'
+import { Outlet } from 'react-router-dom'
+
+import { Navbar } from './app/components/Navbar'
+import { Footer } from './app/components/Footer'
 
 function App() {
-
-
   return (
-    <>
-      <Navbar />
+    <div className="h-screen flex flex-col">
+      <div className='flex-1 px-9'>
+        <Navbar />
 
-      <Routes>
-        <Route path='/' element={<Home />}></Route>
-        <Route path='/login' element={<LoginForm />}></Route>
-        <Route path='/register' element={<RegisterForm />}></Route>
-      </Routes>
-    </>
+        <Outlet />
+      </div>
+
+      <Footer className='px-9' />
+    </div>
   )
 }
 
