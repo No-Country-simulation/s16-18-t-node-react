@@ -9,7 +9,7 @@ import { User } from '../auth/interfaces'
 @ApiTags('Travel')
 @Controller('travel')
 export class TravelController {
-  constructor(private readonly travelService: TravelService) {}
+  constructor(private readonly travelService: TravelService) { }
 
   @ApiOperation({ description: 'This find all travels with optional query params' })
   @Get('search')
@@ -20,8 +20,8 @@ export class TravelController {
   @ApiOperation({ description: 'This create a travel' })
   @Auth()
   @Post('create')
-  async create(@Body() createTravelDto: CreateTravelDto) {
-    return await this.travelService.create(createTravelDto)
+  async create(@Body() createTravelDto: CreateTravelDto, @GetUser() user: User) {
+    return await this.travelService.create(createTravelDto, user)
   }
 
   @ApiOperation({ description: 'This create a passenger' })

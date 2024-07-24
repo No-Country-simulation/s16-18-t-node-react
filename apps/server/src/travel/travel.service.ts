@@ -1,4 +1,4 @@
-import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common'
+import { BadRequestException, ConflictException, Injectable } from '@nestjs/common'
 
 import { User } from '../auth/interfaces'
 import { CarService } from '../car/car.service'
@@ -6,15 +6,16 @@ import { PrismaService } from '../prisma/prisma.service'
 import { CreateTravelDto, TravelQueryParamsDto } from './dto'
 import { getDateWithTime, getFormatedPrice, getSeparatedDate } from './utils'
 import { handleErrorException } from 'src/common/utils'
-import { ok } from 'assert'
 import { $Enums } from '@prisma/client'
+import { CreatePreferenceTravelDto } from './dto/preference-travel.dto'
+import { DefaultPreference } from 'src/preferences/enums/default-preference'
 
 @Injectable()
 export class TravelService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly carService: CarService,
-  ) {}
+  ) { }
 
   async findTravelsByQueryParams(travelQueryParamsDto: TravelQueryParamsDto) {
     const { destination = '', hour, origin = '', min_price, max_price, start_date, state, currency, locale } = travelQueryParamsDto
@@ -48,8 +49,9 @@ export class TravelService {
     }))
   }
 
-  async create(createTravelDto: CreateTravelDto) {
-    const { hour, start_date, carId, preferences, ...travelData } = createTravelDto
+  async create(createTravelDto: CreateTravelDto, user: User) {
+    const { hour, start_date, carId, preferences, ...travelData } = createTravelDto;
+    await this.validatePreferenceFemale(preferences, user);
 
     const fullDateFromDate = start_date ? new Date(start_date) : new Date()
     const fullDateFromTime = getDateWithTime(hour)
@@ -64,22 +66,14 @@ export class TravelService {
           hour: fullDateFromTime,
           carID: carFound.id,
         },
-      })
+      });
 
-      const preferencePromises = preferences?.map(async (id) => {
-        const preference = await prismaClient.preference.findUnique({ where: { id } })
-
-        if (!preference) throw new NotFoundException(`Preference with ID ${id} not found`)
-
-        return preference
-      })
-
-      await Promise.all(preferencePromises)
 
       await prismaClient.preferenceTravel.createMany({
-        data: preferences.map((preferenceId) => ({
-          preferenceID: preferenceId,
+        data: preferences.map((_) => ({
+          preferenceID: _.preferenceID,
           travelID: newTravel.id,
+          state: _.state
         })),
       })
 
@@ -198,5 +192,19 @@ export class TravelService {
     const passenger = consult.flatMap((a) => a.passenger.userDetail)
 
     return passenger
+  }
+
+  private async validatePreferenceFemale(preferencesDto: CreatePreferenceTravelDto[], passenger: User) {
+    const preferences = await Promise.all(preferencesDto.map(_ => this.prisma.preference.findFirst({
+      where: { id: _.preferenceID },
+    })));
+
+    preferences.forEach(_ => {
+      const data = preferencesDto.find(preference => preference.preferenceID === _.id)
+      if (DefaultPreference.FEMALE === _.name && data.state) {
+        if (passenger.gender === "MALE")
+          throw new BadRequestException("El pasajero no puede ser un hombre en un viaje para mujeres");
+      }
+    })
   }
 }
