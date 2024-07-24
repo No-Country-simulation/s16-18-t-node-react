@@ -21,8 +21,8 @@ export const HomePage = () => {
 
       <TravelCard
         availableSeats={4}
-        origin='San Fernando, Chile'
-        destination='Rancagua, Chile'
+        origin='San Fernando, Chilessssssssssssssssssss'
+        destination='Rancagua, Chilesfddddddddddddddddddddd'
         driverImage='notfound'
         driverName='Manuel'
         driverRating='4'

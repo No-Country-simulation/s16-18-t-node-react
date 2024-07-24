@@ -13,16 +13,17 @@ interface Props {
 
 export const TravelCard = ({ origin, destination, driverImage, driverRating, startDate, availableSeats, driverName }: Props) => {
   return (
-    <article>
-      <div className="bg-[#D9DBE933] p-8 rounded-t-xl flex justify-between">
-        <div className="space-y-1">
+    <section>
+      <div className="bg-[#D9DBE933] rounded-t-xl flex justify-between p-9">
+        <div className="space-y-1 truncate mr-2">
           <div className="flex items-center gap-2">
-            <MapPointerIcon />
-            <h3>{origin}</h3>
+            <span><MapPointerIcon /></span>
+            <p className="truncate">{origin}</p>
           </div>
+
           <div className="flex items-center gap-2">
-            <MapPointerIcon />
-            <h3>{destination}</h3>
+            <span><MapPointerIcon /></span>
+            <p className="truncate">{destination}</p>
           </div>
         </div>
 
@@ -56,6 +57,6 @@ export const TravelCard = ({ origin, destination, driverImage, driverRating, sta
           </div>
         </div>
       </div>
-    </article>
+    </section>
   )
 }

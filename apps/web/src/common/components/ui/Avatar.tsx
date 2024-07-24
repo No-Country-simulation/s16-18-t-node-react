@@ -2,8 +2,8 @@ const staticImage = 'https://i0.wp.com/digitalhealthskills.com/wp-content/upload
 
 export const Avatar = () => {
   return (
-    <div className="relative">
-      <img className="size-[35px] rounded-full" src={staticImage} alt="User image" />
-    </div>
+    <picture className="size-[35px]">
+      <img className="rounded-full" src={staticImage} alt="User image" />
+    </picture>
   )
 }
