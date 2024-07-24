@@ -1,4 +1,4 @@
-import { MapPointerIcon } from "@icons"
+import { Calendar, MapPointerIcon, UserIcon } from "@icons"
 import { Avatar } from "@ui"
 
 interface Props {
@@ -13,17 +13,17 @@ interface Props {
 
 export const TravelCard = ({ origin, destination, driverImage, driverRating, startDate, availableSeats, driverName }: Props) => {
   return (
-    <section>
+    <div>
       <div className="bg-[#D9DBE933] rounded-t-xl flex justify-between p-9">
         <div className="space-y-1 truncate mr-2">
           <div className="flex items-center gap-2">
             <span><MapPointerIcon /></span>
-            <p className="truncate">{origin}</p>
+            <p className="truncate text-primary">{origin}</p>
           </div>
 
           <div className="flex items-center gap-2">
             <span><MapPointerIcon /></span>
-            <p className="truncate">{destination}</p>
+            <p className="truncate text-primary">{destination}</p>
           </div>
         </div>
 
@@ -37,26 +37,24 @@ export const TravelCard = ({ origin, destination, driverImage, driverRating, sta
       </div>
 
       <div className="p-8 rounded-b-xl flex justify-between border border-[#D9DBE9]">
-        <div>
-          <div className="flex flex-col">
-            <h3>FECHA</h3>
+        <div className="flex flex-col gap-1">
+          <h3 className="text-xs">FECHA</h3>
 
-            <div className="flex items-center gap-2">
-              <MapPointerIcon />
-              <p>{startDate}</p>
-            </div>
+          <div className="flex items-center gap-2">
+            <Calendar />
+            <p>{startDate}</p>
           </div>
         </div>
 
-        <div className="flex flex-col gap-2">
-          <h3>LUGARES</h3>
+        <div className="flex flex-col gap-1">
+          <h3 className="text-xs">LUGARES</h3>
 
-          <div className="flex items-center gap-4">
-            <MapPointerIcon />
+          <div className="flex items-center gap-2">
+            <UserIcon />
             <p>{availableSeats}</p>
           </div>
         </div>
       </div>
-    </section>
+    </div>
   )
 }
