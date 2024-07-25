@@ -9,7 +9,7 @@ import { User } from '../auth/interfaces'
 @ApiTags('Travel')
 @Controller('travel')
 export class TravelController {
-  constructor(private readonly travelService: TravelService) {}
+  constructor(private readonly travelService: TravelService) { }
 
   @ApiOperation({ description: 'This find all travels with optional query params' })
   @Get('search')
@@ -41,7 +41,7 @@ export class TravelController {
   @Auth()
   @Delete('cancell-passenger/:travelID')
   async cancellTravelPassenger(@Param('travelID', ParseUUIDPipe) travelID: string, @GetUser() user: User) {
-    return await this.travelService.cancelleTravelPassenger(user, travelID)
+    return await this.travelService.cancelTravelPassenger(user, travelID)
   }
 
   @ApiOperation({ description: 'This is for find all passenger' })
