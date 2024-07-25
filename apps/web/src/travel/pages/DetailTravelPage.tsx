@@ -52,7 +52,7 @@ export const DetailTravelPage = () => {
         <a className='underline text-xs text-secondary mt-0.5'>Más información</a>
       </div>
 
-      <div className='space-y-2 max-w-[90%]'>
+      <div className='space-y-2 px-4'>
         <div className='flex items-center gap-2'>
           <span className='size-7'><Avatar /></span>
           <p className='text-primary text-base'>Claudio ⭐ 4.5 <span className='text-xs text-secondary'>(Conductor)</span></p>
