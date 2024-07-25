@@ -15,10 +15,10 @@ export class TravelService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly carService: CarService,
-  ) {}
+  ) { }
 
   async findTravelsByQueryParams(travelQueryParamsDto: TravelQueryParamsDto) {
-    const { destination = '', hour, origin = '', min_price, max_price, start_date, state, currency, locale } = travelQueryParamsDto
+    const { destination = '', hour, origin = '', min_price, max_price, start_date, state, currency, locale, limit = 10, size = 1 } = travelQueryParamsDto
 
     const fullDateFromDate = start_date ? new Date(start_date) : new Date()
     const fullDateFromHour = hour ? getDateWithTime(hour) : undefined
@@ -26,7 +26,6 @@ export class TravelService {
     if (currency) {
       if (!getFormatedPrice({ currency })) throw new BadRequestException(`The currency code ${currency} is invalid`)
     }
-
     const travelsFound = await this.prisma.travel.findMany({
       where: {
         origin: { contains: origin, mode: 'insensitive' },
@@ -37,6 +36,15 @@ export class TravelService {
         price: {
           gte: min_price,
           lte: max_price,
+        },
+      },
+      skip: (size - 1) * limit,
+      take: limit,
+      include: {
+        PreferenceTravel: {
+          include: {
+            preference: true,
+          },
         },
       },
     })
