@@ -8,7 +8,7 @@ import { handleErrorException } from 'src/common/utils'
 export class PaymentService {
   async createMercadoPago(createPaymentDto: CreatePaymentDto, user: User) {
     const client = new MercadoPagoConfig({ accessToken: process.env.TK_MP })
-    console.log(process.env.TK_MP)
+    console.log(createPaymentDto.methodPayment)
 
     const payment = new Payment(client)
 
@@ -38,7 +38,7 @@ export class PaymentService {
             first_name: user.name,
             phone: { number: user.phone },
           },
-          payment_method_id: createPaymentDto.methodPayment,
+          payment_method_id: 'master',
           token: createPaymentDto.token,
           transaction_amount: createPaymentDto.transaction,
         },
