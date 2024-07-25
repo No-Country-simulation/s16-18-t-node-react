@@ -46,4 +46,22 @@ export class CreateCarDto {
   })
   @IsString()
   patent: string
+
+  @ApiProperty({
+    example: '568-gwq',
+    description: 'The driving Record of the car',
+    nullable: false,
+    minLength: 1,
+  })
+  @IsString()
+  drivingRecord: string
+
+  @ApiProperty({
+    example: '568-gwq',
+    description: 'The vehicle Insurance of the car',
+    nullable: false,
+    minLength: 1,
+  })
+  @IsString()
+  vehicleInsurance: string
 }

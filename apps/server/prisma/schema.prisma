@@ -65,14 +65,16 @@ model PreferenceAlert {
 }
 
 model Car {
-  id       String  @id @default(uuid())
-  userID   String
-  brand    String
-  color    String
-  capacity Int
-  photo    String
-  patent   String
-  isActive Boolean @default(true)
+  id               String  @id @default(uuid())
+  userID           String
+  brand            String
+  color            String
+  capacity         Int
+  photo            String
+  patent           String
+  isActive         Boolean @default(true)
+  drivingRecord    String
+  vehicleInsurance String
 
   user   User     @relation(fields: [userID], references: [id])
   travel Travel[]
