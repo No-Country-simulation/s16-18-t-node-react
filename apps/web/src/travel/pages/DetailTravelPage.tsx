@@ -13,7 +13,7 @@ export const DetailTravelPage = () => {
 
   return (
     <section className='space-y-4'>
-      <div className="flex flex-col gap-2 border-2 border-primary rounded-lg p-4">
+      <div className="flex flex-col gap-2 border-2 border-primary rounded-lg p-6">
         <div className='flex gap-2 items-center truncate'>
           <span><CalendarIcon /></span>
           <p className='text-base truncate'>14 de Agosto 2024</p>
@@ -55,7 +55,7 @@ export const DetailTravelPage = () => {
       <div className='space-y-2 max-w-[90%]'>
         <div className='flex items-center gap-2'>
           <span className='size-7'><Avatar /></span>
-          <p className='text-primary text-base'>Claudio <span className='text-xs'>(Conductor)</span></p>
+          <p className='text-primary text-base'>Claudio ⭐ 4.5 <span className='text-xs text-secondary'>(Conductor)</span></p>
         </div>
 
         <p>
@@ -66,7 +66,7 @@ export const DetailTravelPage = () => {
 
 
       <div className='flex justify-center'>
-        <button className='bg-[#A996FF] text-xs text-primary px-4 py-1.5 rounded-full'>Continuar al pago</button>
+        <button className='bg-[#A996FF] text-xs text-primary px-4 py-1.5 rounded-full'>Confirmar viaje</button>
       </div>
 
     </section>
