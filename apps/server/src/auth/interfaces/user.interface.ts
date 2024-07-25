@@ -8,4 +8,5 @@ export interface User {
   dni: string
   phone: string
   avatar: string
+  gender: $Enums.GenderUser
 }

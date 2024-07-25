@@ -20,8 +20,8 @@ export class TravelController {
   @ApiOperation({ description: 'This create a travel' })
   @Auth()
   @Post('create')
-  async create(@Body() createTravelDto: CreateTravelDto) {
-    return await this.travelService.create(createTravelDto)
+  async create(@Body() createTravelDto: CreateTravelDto, @GetUser() user: User) {
+    return await this.travelService.create(createTravelDto, user)
   }
 
   @ApiOperation({ description: 'This create a passenger' })
@@ -42,5 +42,18 @@ export class TravelController {
   @Delete('cancell-passenger/:travelID')
   async cancellTravelPassenger(@Param('travelID', ParseUUIDPipe) travelID: string, @GetUser() user: User) {
     return await this.travelService.cancelleTravelPassenger(user, travelID)
+  }
+
+  @ApiOperation({ description: 'This is for find all passenger' })
+  @Get('find-passengers/:travelID')
+  @Auth()
+  async findPassengers(@Param('travelID', ParseUUIDPipe) travelID: string) {
+    return await this.travelService.findAllPassenger(travelID)
+  }
+
+  @ApiOperation({ description: 'This is for find travel' })
+  @Get('find-travel/:travelID')
+  async findTravel(@Param('travelID', ParseUUIDPipe) travelID: string) {
+    return await this.travelService.findTravelByID(travelID)
   }
 }

@@ -24,6 +24,11 @@ enum StateTravel {
   CANCELLED
 }
 
+enum GenderUser {
+  MALE
+  FEMALE
+}
+
 model User {
   id              String            @id @default(uuid())
   email           String            @unique
@@ -39,11 +44,12 @@ model User {
 }
 
 model UserDetail {
-  id     String  @id @default(uuid())
+  id     String     @id @default(uuid())
   userID String
   dni    String
   name   String
   phone  String
+  gender GenderUser @default(MALE)
   avatar String?
 
   user User @relation(fields: [userID], references: [id])
@@ -59,14 +65,16 @@ model PreferenceAlert {
 }
 
 model Car {
-  id       String  @id @default(uuid())
-  userID   String
-  brand    String
-  color    String
-  capacity Int
-  photo    String
-  patent   String
-  isActive Boolean @default(true)
+  id               String  @id @default(uuid())
+  userID           String
+  brand            String
+  color            String
+  capacity         Int
+  photo            String
+  patent           String
+  isActive         Boolean @default(true)
+  drivingRecord    String
+  vehicleInsurance String
 
   user   User     @relation(fields: [userID], references: [id])
   travel Travel[]
@@ -100,17 +108,17 @@ model Travel {
 }
 
 model Preference {
-  id    String  @id @default(uuid())
-  name  String
-  state Boolean @default(true)
-
+  id               String             @id @default(uuid())
+  name             String
+  description      String
   PreferenceTravel PreferenceTravel[]
 }
 
 model PreferenceTravel {
-  id           String @id @default(uuid())
+  id           String  @id @default(uuid())
   preferenceID String
   travelID     String
+  state        Boolean @default(true)
 
   preference Preference @relation(fields: [preferenceID], references: [id])
   travel     Travel     @relation(fields: [travelID], references: [id])

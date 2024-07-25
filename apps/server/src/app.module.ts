@@ -7,6 +7,8 @@ import { AuthModule } from './auth/auth.module'
 import { CarModule } from './car/car.module'
 import { TravelModule } from './travel/travel.module'
 import { RatingsModule } from './ratings/ratings.module'
+import { SeedersModule } from './seeders/seeders.module'
+import { PreferencesModule } from './preferences/preferences.module'
 
 @Module({
   imports: [
@@ -17,6 +19,8 @@ import { RatingsModule } from './ratings/ratings.module'
     CarModule,
     RatingsModule,
     TravelModule,
+    SeedersModule,
+    PreferencesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

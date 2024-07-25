@@ -3,8 +3,9 @@ import { Type, Transform } from 'class-transformer'
 
 import { ApiProperty } from '@nestjs/swagger'
 import { $Enums } from '@prisma/client'
+import { PaginationDto } from 'src/common/dto/pagination.dto'
 
-export class TravelQueryParamsDto {
+export class TravelQueryParamsDto extends PaginationDto {
   @ApiProperty({
     example: 'San Fernando',
     description: 'The origin city or place',

@@ -1,5 +1,6 @@
-import { ArrayNotEmpty, IsArray, IsISO8601, IsNumber, IsString, IsUUID, Matches, MinLength, ValidateNested } from 'class-validator'
+import { IsISO8601, IsNumber, IsString, IsUUID, Matches, MinLength, ValidateNested } from 'class-validator'
 import { Type } from 'class-transformer'
+import { CreatePreferenceTravelDto } from './preference-travel.dto'
 
 export class CreateTravelDto {
   @IsString()
@@ -24,6 +25,7 @@ export class CreateTravelDto {
   @IsUUID()
   readonly carId: string
 
-  @IsUUID('4', { each: true })
-  readonly preferences: string[]
+  @Type(() => CreatePreferenceTravelDto)
+  @ValidateNested({ each: true })
+  readonly preferences: CreatePreferenceTravelDto[]
 }

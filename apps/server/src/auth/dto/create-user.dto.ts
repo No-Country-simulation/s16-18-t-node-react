@@ -1,6 +1,7 @@
-import { IsEmail, IsString } from 'class-validator'
+import { IsEmail, IsEnum, IsString } from 'class-validator'
 
 import { ApiProperty } from '@nestjs/swagger'
+import { $Enums } from '@prisma/client'
 
 export class CreateUserDto {
   @ApiProperty({
@@ -12,6 +13,17 @@ export class CreateUserDto {
   })
   @IsString()
   readonly name: string
+
+  @ApiProperty({
+    example: 'Male',
+    description: 'The gender user',
+    nullable: false,
+    minLength: 1,
+    type: String,
+  })
+  @IsString()
+  @IsEnum($Enums.GenderUser)
+  readonly gender: $Enums.GenderUser
 
   @ApiProperty({
     example: '+569 33442211',

@@ -5,7 +5,7 @@ import { cn } from "@/common/utils"
 type InputProps = React.InputHTMLAttributes<HTMLInputElement>
 
 interface Props extends InputProps {
-  icon: () => JSX.Element
+  icon?: () => JSX.Element
   searchButton?: boolean
   title: string
   handleClick?: () => void
@@ -29,7 +29,7 @@ export const CustomInput = ({ handleChange, handleClick, icon, searchButton, tit
       </input>
 
       <div className='absolute top-0 px-[16px] flex flex-col items-center justify-center h-full'>
-        {icon()}
+        {icon ? icon() : null}
       </div>
 
       <h3 className='absolute top-[8px] left-10 uppercase text-xs'>{title}</h3>
