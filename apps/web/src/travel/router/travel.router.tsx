@@ -3,7 +3,7 @@ import { DetailTravelPage } from "../pages/DetailTravelPage";
 
 export const travelRouter: RouteObject[] = [
   {
-    index: true,
+    path: ':id',
     element: <DetailTravelPage />
   }
 ] 
