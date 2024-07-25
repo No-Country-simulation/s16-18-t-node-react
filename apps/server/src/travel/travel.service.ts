@@ -15,7 +15,7 @@ export class TravelService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly carService: CarService,
-  ) { }
+  ) {}
 
   async findTravelsByQueryParams(travelQueryParamsDto: TravelQueryParamsDto) {
     const { destination = '', hour, origin = '', min_price, max_price, start_date, state, currency, locale, limit = 10, size = 1 } = travelQueryParamsDto
