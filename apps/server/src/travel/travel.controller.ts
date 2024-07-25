@@ -50,4 +50,10 @@ export class TravelController {
   async findPassengers(@Param('travelID', ParseUUIDPipe) travelID: string) {
     return await this.travelService.findAllPassenger(travelID)
   }
+
+  @ApiOperation({ description: 'This is for find travel' })
+  @Get('find-travel/:travelID')
+  async findTravel(@Param('travelID', ParseUUIDPipe) travelID: string) {
+    return await this.travelService.findTravelByID(travelID)
+  }
 }
