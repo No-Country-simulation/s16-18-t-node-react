@@ -1,4 +1,4 @@
-export const PetsIcon = () => (
+export const NoPetsIcon = () => (
   <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
     <rect width="21.8275" height="21.8275" fill="url(#pattern0_171_5095)" />
     <defs>
