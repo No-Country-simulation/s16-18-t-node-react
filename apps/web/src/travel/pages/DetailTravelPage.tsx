@@ -1,7 +1,16 @@
+import { useEffect } from 'react'
+import { useParams } from 'react-router-dom'
+
 import { Avatar } from '@/common/components/ui'
 import { BabyIcon, CalendarIcon, MapPointerIcon, PetsIcon, SmokeIcon } from '@icons'
 
 export const DetailTravelPage = () => {
+  const { id } = useParams()
+
+  useEffect(() => {
+    //* get travel
+  }, [])
+
   return (
     <section className='space-y-4'>
       <div className="flex flex-col gap-2 border-2 border-primary rounded-lg p-4">
