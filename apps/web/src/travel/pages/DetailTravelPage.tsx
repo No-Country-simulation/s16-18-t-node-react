@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 
 import { Avatar } from '@/common/components/ui'
-import { NoKidsIcon, CalendarIcon, MapPointerIcon, NoPetsIcon, NoSmokingIcon } from '@icons'
+import { NoKids, CalendarIcon, MapPointerIcon, NoPets, NoSmoking } from '@icons'
 
 export const DetailTravelPage = () => {
   const { id } = useParams()
@@ -40,9 +40,9 @@ export const DetailTravelPage = () => {
         </div>
 
         <div className='flex gap-2'>
-          <NoSmokingIcon />
-          <NoKidsIcon />
-          <NoPetsIcon />
+          <NoSmoking />
+          <NoKids />
+          <NoPets />
         </div>
 
       </div>
