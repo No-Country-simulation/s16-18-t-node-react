@@ -15,7 +15,8 @@ module.exports = {
         secondary:  '#6E7191'
       },
       borderColor: {
-        primary: '#D3D3D3'
+        primary: '#D3D3D3',
+        secondary: '#939393'
       },
       backgroundColor: {
         primary: '#D9DBE9'
