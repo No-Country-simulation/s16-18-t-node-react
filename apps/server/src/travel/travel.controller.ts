@@ -41,7 +41,7 @@ export class TravelController {
   @Auth()
   @Delete('cancell-passenger/:travelID')
   async cancellTravelPassenger(@Param('travelID', ParseUUIDPipe) travelID: string, @GetUser() user: User) {
-    return await this.travelService.cancelleTravelPassenger(user, travelID)
+    return await this.travelService.cancelTravelPassenger(user, travelID)
   }
 
   @ApiOperation({ description: 'This is for find all passenger' })

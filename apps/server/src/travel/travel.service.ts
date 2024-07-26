@@ -46,6 +46,7 @@ export class TravelService {
             preference: true,
           },
         },
+        PassengerTravel: true,
       },
     })
 
@@ -148,7 +149,7 @@ export class TravelService {
       .catch((e) => handleErrorException(e))
   }
 
-  async cancelleTravelPassenger(user: User, travelID: string) {
+  async cancelTravelPassenger(user: User, travelID: string) {
     const { id } = await this.findPassengerByID(user.id, travelID)
     return this.prisma.passengerTravel.update({
       where: {
@@ -185,12 +186,7 @@ export class TravelService {
       select: {
         passenger: {
           select: {
-            userDetail: {
-              select: {
-                name: true,
-                avatar: true,
-              },
-            },
+            userDetail: true,
           },
         },
       },

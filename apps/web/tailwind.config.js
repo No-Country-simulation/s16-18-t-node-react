@@ -12,14 +12,16 @@ module.exports = {
     extend: {
       colors: {
         primary: '#034363',
-        secondary:  '#6E7191'
+        secondary:  '#6E7191',
+        tertiary: '#652BB3'
       },
       borderColor: {
         primary: '#D3D3D3',
         secondary: '#939393'
       },
       backgroundColor: {
-        primary: '#D9DBE9'
+        primary: '#D9DBE9',
+        secondary: '#BAADDB'
       }
     },
   },
