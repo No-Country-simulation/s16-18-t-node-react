@@ -1,6 +1,10 @@
+import { paths } from "@/app/router/paths";
 import { CalendarIcon, MapPointerIcon } from "@icons"
+import { useNavigate } from "react-router-dom";
 
 export const DetailPaymentPage = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="flex flex-col gap-5 pb-20 mt-8">
       <h2>Revisa los datos de tu reserva</h2>
@@ -60,7 +64,7 @@ export const DetailPaymentPage = () => {
       </div>
 
       <div className='flex justify-center'>
-        <button className='bg-[#A996FF] text-xs text-primary px-4 py-1.5 rounded-full'>Continuar al pago</button>
+        <button className='bg-[#A996FF] text-xs text-primary px-4 py-1.5 rounded-full' onClick={() => navigate(paths.payments.methods)}>Continuar al pago</button>
       </div>
     </div>
   )
