@@ -5,6 +5,7 @@ import { CreateTravelDto, TravelQueryParamsDto } from './dto'
 import { ApiOperation, ApiTags } from '@nestjs/swagger'
 import { Auth, GetUser } from '../auth/decorator'
 import { User } from '../auth/interfaces'
+import { PaymentMPDto } from 'src/payment/dto/payment-mp.dto'
 
 @ApiTags('Travel')
 @Controller('travel')
@@ -27,8 +28,8 @@ export class TravelController {
   @ApiOperation({ description: 'This create a passenger' })
   @Auth()
   @Post('create-passenger/:travelID')
-  async createPassenger(@Param('travelID', ParseUUIDPipe) travelID: string, @GetUser() user: User) {
-    return await this.travelService.NewPassenger(travelID, user)
+  async createPassenger(@Body() paymentMPDto: PaymentMPDto, @Param('travelID', ParseUUIDPipe) travelID: string, @GetUser() user: User) {
+    return await this.travelService.NewPassenger(paymentMPDto, travelID, user)
   }
 
   @ApiOperation({ description: 'This find disponibility' })

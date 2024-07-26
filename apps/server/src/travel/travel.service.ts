@@ -9,12 +9,15 @@ import { handleErrorException } from 'src/common/utils'
 import { $Enums } from '@prisma/client'
 import { CreatePreferenceTravelDto } from './dto/preference-travel.dto'
 import { DefaultPreference } from 'src/preferences/enums/default-preference'
+import { PaymentService } from '../payment/payment.service'
+import { PaymentMPDto } from 'src/payment/dto/payment-mp.dto'
 
 @Injectable()
 export class TravelService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly carService: CarService,
+    private readonly paymentService: PaymentService,
   ) {}
 
   async findTravelsByQueryParams(travelQueryParamsDto: TravelQueryParamsDto) {
@@ -91,7 +94,7 @@ export class TravelService {
     return travel
   }
 
-  async NewPassenger(travelID: string, user: User) {
+  async NewPassenger(paymentMPDto: PaymentMPDto, travelID: string, user: User) {
     try {
       const repitePassenger = await this.findPassengerByID(user.id, travelID)
       if (repitePassenger) {
@@ -103,10 +106,13 @@ export class TravelService {
       const capacity = await this.findDisponibilityTravel(travelID)
       if (capacity === 0) throw new ConflictException('There are no hundreds available')
 
+      const payment = await this.paymentService.paymentMP(paymentMPDto, user)
+
       return await this.prisma.passengerTravel.create({
         data: {
           passengerID: user.id,
           travelID,
+          paymentID: payment.id,
         },
       })
     } catch (error) {
