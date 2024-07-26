@@ -8,7 +8,7 @@ export const SuccessPage = () => {
         <div className="flex absolute justify-center items-center inset-0"><CheckIcon /></div>
       </div>
 
-      <div>¡Tu pago se a realizado con éxito!</div>
+      <p className="text-primary text-base font-semibold">¡Tu pago se a realizado con éxito!</p>
 
       <p className="text-center">Detalle</p>
 
