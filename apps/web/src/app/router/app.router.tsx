@@ -5,6 +5,7 @@ import { HomePage } from "@/app/pages/HomePage";
 import TravelFilterPage from "../pages/TravelFilterPage";
 
 import { travelRouter } from "@/travel/router/travel.router";
+import { paymentRouter } from "@/payment/router/payment.router";
 
 export const router = createBrowserRouter([
   {
@@ -25,5 +26,10 @@ export const router = createBrowserRouter([
     path: '/travel',
     element: <App />,
     children: travelRouter
+  },
+  {
+    path: '/payment',
+    element: <App />,
+    children: paymentRouter
   }
 ]);
