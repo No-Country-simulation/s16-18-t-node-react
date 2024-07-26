@@ -3,16 +3,21 @@ import { AuthService } from './auth.service'
 import { CreateUserDto, LoginUserDto } from './dto'
 import { ApiOperation, ApiTags } from '@nestjs/swagger'
 import { Response } from 'express'
+import { WalletsService } from 'src/wallets/wallets.service'
 
 @ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly walletsService: WalletsService,
+  ) {}
 
   @ApiOperation({ description: 'This creates a new user inside the database' })
   @Post('register')
   async create(@Body() createUserDto: CreateUserDto, @Res() res: Response) {
     const { user, token } = await this.authService.create(createUserDto)
+    await this.walletsService.createWallet(user.id)
 
     return res.cookie('access_token', token).send(user)
   }
