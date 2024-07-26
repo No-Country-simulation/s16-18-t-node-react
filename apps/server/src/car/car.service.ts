@@ -23,6 +23,8 @@ export class CarService {
           patent: createCarDto.patent,
           photo: createCarDto.photo,
           userID: user.id,
+          drivingRecord: createCarDto.drivingRecord,
+          vehicleInsurance: createCarDto.vehicleInsurance,
         },
       })
 

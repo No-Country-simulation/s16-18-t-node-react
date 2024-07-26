@@ -4,6 +4,9 @@ import App from "@/App";
 import { HomePage } from "@/app/pages/HomePage";
 import TravelFilterPage from "../pages/TravelFilterPage";
 
+import { travelRouter } from "@/travel/router/travel.router";
+import { paymentRouter } from "@/payment/router/payment.router";
+
 export const router = createBrowserRouter([
   {
     path: '/',
@@ -17,6 +20,16 @@ export const router = createBrowserRouter([
         path: '/buscar-viaje',
         element: <TravelFilterPage />
       }
-    ]
+    ],
+  },
+  {
+    path: '/travel',
+    element: <App />,
+    children: travelRouter
+  },
+  {
+    path: '/payment',
+    element: <App />,
+    children: paymentRouter
   }
 ]);
