@@ -12,7 +12,7 @@ module.exports = {
     extend: {
       colors: {
         primary: '#034363',
-        secondary:  '#6E7191',
+        secondary: '#6E7191',
         tertiary: '#652BB3'
       },
       borderColor: {
@@ -21,9 +21,17 @@ module.exports = {
       },
       backgroundColor: {
         primary: '#D9DBE9',
-        secondary: '#BAADDB'
+        secondary: '#BAADDB',
+        tertiary: '#6750A4'
       }
     },
   },
-  plugins: [],
+  plugins: [
+    require('daisyui'),
+  ],
+  daisyui: {
+    themes: [
+      'light',
+    ],
+  },
 }

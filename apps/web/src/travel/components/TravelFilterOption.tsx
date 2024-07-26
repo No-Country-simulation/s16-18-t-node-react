@@ -13,15 +13,16 @@ const TravelFilterOption = ({ title, icon, value, onChange }: Props) => {
     }
 
     return (
-        <div className='flex justify-between'>
-            <div className=' flex items-center gap-3'>
+        <div className='flex justify-between items-center'>
+            <div className='flex gap-3'>
                 {icon()}
-                <p className='text-lg'>{title}</p>
+                <h1 className="text-secondary">{title}</h1>
             </div>
             <input
                 type="checkbox"
                 checked={value}
                 onChange={handleChange}
+                className="toggle toggle-sm bg-white [--tglbg:#6750A4] hover:bg-white"
             />
         </div>
     )
