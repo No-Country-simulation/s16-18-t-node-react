@@ -1,16 +1,29 @@
-import { Controller, Post, Body } from '@nestjs/common'
+import { Controller, Param, ParseIntPipe, Get, ParseUUIDPipe } from '@nestjs/common'
 import { PaymentService } from './payment.service'
-import { CreatePaymentDto } from './dto/create-payment.dto'
-import { Auth, GetUser } from '../auth/decorator'
-import { User } from '../auth/interfaces'
+import { Auth } from '../auth/decorator'
+import { ApiOperation } from '@nestjs/swagger'
 
 @Controller('payment')
 export class PaymentController {
   constructor(private readonly paymentService: PaymentService) {}
 
-  @Post('mercadopago')
+  @ApiOperation({ description: 'get payment detail for id mercadopago' })
+  @Get('mercadopago/payment/:id')
   @Auth()
-  mercadoPago(@Body() createPaymentDto: CreatePaymentDto, @GetUser() user: User) {
-    return this.paymentService.createMercadoPago(createPaymentDto, user)
+  findPaymentId(@Param('id', ParseIntPipe) id: number) {
+    return this.paymentService.findPaymentId(id)
+  }
+
+  @ApiOperation({ description: 'get payment for id' })
+  @Get(':id')
+  @Auth()
+  findOne(@Param('id', ParseUUIDPipe) id: string) {
+    return this.paymentService.findOne(id)
+  }
+  @ApiOperation({ description: 'get all payment' })
+  @Get()
+  @Auth()
+  findAll() {
+    return this.paymentService.findAll()
   }
 }
