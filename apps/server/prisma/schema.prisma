@@ -41,6 +41,8 @@ model User {
   ratingsGiven    Rating[]          @relation(name: "DriverRelation")
   ratingsReceived Rating[]          @relation(name: "PassengerRelation")
   passengerTravel PassengerTravel[]
+  Payment         Payment[]
+  Wallet          Wallet[]
 }
 
 model UserDetail {
@@ -128,8 +130,28 @@ model PassengerTravel {
   id          String         @id @default(uuid())
   passengerID String
   travelID    String
+  paymentID   String
   state       StatePassenger @default(OK)
 
-  travel    Travel @relation(fields: [travelID], references: [id])
-  passenger User   @relation(fields: [passengerID], references: [id])
+  travel    Travel  @relation(fields: [travelID], references: [id])
+  passenger User    @relation(fields: [passengerID], references: [id])
+  payment   Payment @relation(fields: [paymentID], references: [id])
+}
+
+model Payment {
+  id          String @id @default(uuid())
+  referenceId Int
+  price       Int    @default(0)
+  state       String
+  customerID  String
+
+  user            User              @relation(fields: [customerID], references: [id])
+  PassengerTravel PassengerTravel[]
+}
+
+model Wallet {
+  id     String @id @default(uuid())
+  userID String @unique
+  amount Int    @default(0)
+  user   User   @relation(fields: [userID], references: [id])
 }
