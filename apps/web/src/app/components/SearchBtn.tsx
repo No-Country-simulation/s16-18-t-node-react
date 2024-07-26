@@ -1,8 +1,8 @@
 
 export const SearchBtn = () => {
     return (
-        <button className="w-[93.3px] mb-[50px] py-1 bg-[#A996FF] mx-auto text-primary rounded-full">
-            Buscar
+        <button className="w-full h-[39px] bg-tertiary mx-auto text-white rounded-full">
+            Buscar viaje
         </button>
     )
 }

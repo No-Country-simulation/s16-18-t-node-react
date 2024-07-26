@@ -2,7 +2,7 @@ import { TravelCard } from "./TravelCard"
 
 export const TravelGrid = () => {
   return (
-    <section className="flex flex-col gap-5 pb-4">
+    <section className="flex flex-col gap-5 mb-16">
       <TravelCard
         availableSeats={4}
         origin='San Fernando, Chilessssssssssssssssssss'

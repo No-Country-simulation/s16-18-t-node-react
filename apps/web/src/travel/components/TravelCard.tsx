@@ -14,20 +14,26 @@ interface Props {
 export const TravelCard = ({ origin, destination, driverImage, driverRating, startDate, availableSeats, driverName }: Props) => {
   return (
     <div>
-      <div className="bg-[#D9DBE933] rounded-t-xl flex justify-between p-9">
-        <div className="space-y-1 truncate mr-2">
+      <div className="bg-[#E7E0FA] rounded-t-xl flex justify-between py-3 px-5">
+        <div className="space-y-1 truncate mr-4 space-y-4">
           <div className="flex items-center gap-2">
             <span><MapPointerIcon /></span>
-            <p className="truncate text-primary">{origin}</p>
+            <div>
+              <p>ORIGEN</p>
+              <p className="truncate text-primary">{origin}</p>
+            </div>
           </div>
 
           <div className="flex items-center gap-2">
             <span><MapPointerIcon /></span>
-            <p className="truncate text-primary">{destination}</p>
+            <div>
+              <p>DESTINO</p>
+              <p className="truncate text-primary">{destination}</p>
+            </div>
           </div>
         </div>
 
-        <div className="flex gap-2">
+        <div className="flex flex-col items-center gap-2">
           <Avatar />
           <div>
             <p>{driverName}</p>
@@ -36,8 +42,8 @@ export const TravelCard = ({ origin, destination, driverImage, driverRating, sta
         </div>
       </div>
 
-      <div className="p-8 rounded-b-xl flex justify-between border border-[#D9DBE9]">
-        <div className="flex flex-col gap-1">
+      <div className="py px-5 rounded-b-xl flex justify-between">
+        <div className="w-[50%] py-2 flex flex-col gap-1 border-r-2 border-r-gray-300">
           <h3 className="text-xs">FECHA</h3>
 
           <div className="flex items-center gap-2">
@@ -46,7 +52,7 @@ export const TravelCard = ({ origin, destination, driverImage, driverRating, sta
           </div>
         </div>
 
-        <div className="flex flex-col gap-1">
+        <div className="py-2 flex flex-col gap-1">
           <h3 className="text-xs">LUGARES</h3>
 
           <div className="flex items-center gap-2">
