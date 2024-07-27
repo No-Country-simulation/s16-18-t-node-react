@@ -1,30 +1,27 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* @layer base {
-  :root {
-    --titleColor: #fff;
-  }
-} */
 
 @layer base {
 
   html {
-    background-color: '#FFFFFF';
+    background-color: #FFFFFF; /* Usa valores hexadecimales sin comillas */
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   }
-
-
+  
   h1 {
-    @apply text-base font-normal
+    @apply text-base font-normal;
   }
 
   h2 {
-    @apply text-base font-semibold
+    @apply text-base font-semibold;
   }
 
   h3 {
-    @apply text-secondary font-medium
+    @apply text-secondary font-medium;
   }
 
   h1,
@@ -32,11 +29,11 @@
   h4,
   h5,
   h6 {
-    @apply text-primary
+    @apply text-primary;
   }
 
   p {
-    @apply font-normal text-xs text-secondary
+    @apply font-normal text-xs text-secondary;
   }
 
   input[type="range"] {
