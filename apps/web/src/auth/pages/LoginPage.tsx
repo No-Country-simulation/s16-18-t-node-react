@@ -1,23 +1,48 @@
-import { EmailIcon, FillLockIcon } from "@/common/components/icons"
-import { CustomInput } from "@/common/components/ui"
 import { Link } from "react-router-dom"
 
+import { useFormik } from 'formik'
+import * as Yup from 'yup'
+
+import { EmailIcon, FillLockIcon } from "@icons"
+import { CustomInputFormik } from "@ui"
+
+const INITIAL_VALUES = {
+  email: '',
+  password: ''
+}
+
+const validationSchema = Yup.object({
+  email: Yup.string().email('El email es invalido').required('El email es obligatorio'),
+  password: Yup.string().min(6, 'La contraseña debe tener al menos 6 caracteres').required('La contraseña es obligatoria')
+})
+
 export const LoginPage = () => {
+  const { handleSubmit, getFieldProps, errors }
+    = useFormik({
+      initialValues: INITIAL_VALUES,
+      onSubmit: value => console.log(value),
+      validationSchema: validationSchema,
+    })
+
   return (
     <div className="text-center  pt-8">
       <h2 className="pb-8">Iniciar sesión</h2>
 
-      <div className="space-y-4 pb-6">
-        <CustomInput icon={() => <EmailIcon />} placeholder="Mail" />
-        <CustomInput icon={() => <FillLockIcon />} placeholder="Contraseña" />
-      </div>
+      <form onSubmit={handleSubmit} className="space-y-4 pb-6">
+        <CustomInputFormik errorMessage={errors?.email} getFieldFormikProps={getFieldProps} name="email" icon={() => <EmailIcon />} placeholder="Mail" />
 
-      <a href="#" className="text-sm text-primary">¿Olvidaste tu contraseña?</a>
+        <CustomInputFormik errorMessage={errors?.password} getFieldFormikProps={getFieldProps} name="password" icon={() => <FillLockIcon />} placeholder="Contraseña" />
 
-      <button className='mt-6 mb-4 bg-tertiary py-3 text-base text-white font-medium rounded-full w-full hover:bg-tertiary/90'>Iniciar sesión</button>
+        <div className="space-y-4">
+          <a href="#" className="hover:underline text-sm text-primary">¿Olvidaste tu contraseña?</a>
+
+          <button type="submit" className='bg-tertiary py-3 text-base text-white font-medium rounded-full w-full hover:bg-tertiary/90'>Iniciar sesión</button>
+        </div>
+      </form>
+
 
       <div className="flex flex-col gap-4">
-        <a href="#" className="text-sm text-primary">¿No tenés cuenta?</a>
+        <a href="#" className="hover:underline text-sm text-primary">¿No tenés cuenta?</a>
         <Link to="/auth/register" className="underline text-tertiary font-bold">Registrarme</Link>
       </div>
     </div>
