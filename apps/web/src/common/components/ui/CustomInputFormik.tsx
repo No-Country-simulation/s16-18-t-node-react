@@ -1,7 +1,7 @@
 import { FieldConfig, FieldInputProps } from "formik"
 
 import { cn } from "@/common/utils"
-import { ExclamationError, LockIcon } from "../icons"
+import { ExclamationError } from "../icons"
 
 type InputProps = React.InputHTMLAttributes<HTMLInputElement>
 
@@ -22,8 +22,9 @@ export const CustomInputFormik = ({ icon, title, className, getFieldFormikProps,
 
           type="text"
           className={
-            cn("rounded-lg border border-primary w-full h-[60px] pl-10 pr-4 outline-none      transition-all duration-300", {
+            cn("rounded-lg border border-primary w-full h-[60px] pl-4 pr-4 outline-none      transition-all duration-300", {
               'pt-4 pb-2': title,
+              'pl-10': icon,
               'border-red-600 pr-8': errorMessage
             })
           }
@@ -31,7 +32,7 @@ export const CustomInputFormik = ({ icon, title, className, getFieldFormikProps,
         >
         </input>
 
-        <div className='absolute top-0 px-[16px] flex flex-col items-center justify-center h-full'>
+        <div className='absolute inset-0 flex items-center w-fit pl-4'>
           {icon ? icon() : null}
         </div>
 
