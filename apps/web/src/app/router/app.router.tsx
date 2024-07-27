@@ -6,6 +6,7 @@ import TravelFilterPage from "../pages/TravelFilterPage";
 
 import { travelRouter } from "@/travel/router/travel.router";
 import { paymentRouter } from "@/payment/router/payment.router";
+import { authRouter } from "@/auth/router/auth.router";
 import { profileRouter } from "@/user/router/user.router";
 
 export const router = createBrowserRouter([
@@ -28,6 +29,11 @@ export const router = createBrowserRouter([
     path: '/payment',
     element: <App />,
     children: paymentRouter
+  },
+  {
+    path: '/auth',
+    element: <App />,
+    children: authRouter,
   },
   {
     path: '/profile',
