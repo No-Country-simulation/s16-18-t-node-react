@@ -7,6 +7,7 @@ import TravelFilterPage from "../pages/TravelFilterPage";
 import { travelRouter } from "@/travel/router/travel.router";
 import { paymentRouter } from "@/payment/router/payment.router";
 import { authRouter } from "@/auth/router/auth.router";
+import { profileRouter } from "@/user/router/user.router";
 
 export const router = createBrowserRouter([
   {
@@ -16,10 +17,6 @@ export const router = createBrowserRouter([
       {
         index: true,
         element: <HomePage />
-      },
-      {
-        path: '/buscar-viaje',
-        element: <TravelFilterPage />
       }
     ],
   },
@@ -36,6 +33,11 @@ export const router = createBrowserRouter([
   {
     path: '/auth',
     element: <App />,
-    children: authRouter
+    children: authRouter,
+  },
+  {
+    path: '/profile',
+    element: <App />,
+    children: profileRouter
   }
 ]);

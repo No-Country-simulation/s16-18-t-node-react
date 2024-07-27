@@ -1,6 +1,6 @@
 export const NoSmoking = () => (
     <svg width="31" height="30" viewBox="0 0 31 30" fill="none" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
-        <rect width="30.0301" height="30" fill="url(#pattern0_260_2769)" />
+        <rect width="24" height="24" fill="url(#pattern0_260_2769)" />
         <defs>
             <pattern id="pattern0_260_2769" patternContentUnits="objectBoundingBox" width="1" height="1">
                 <use xlinkHref="#image0_260_2769" transform="scale(0.00100301 0.00100402)" />
