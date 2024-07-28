@@ -1,7 +1,17 @@
+import { useEffect } from 'react'
+
 import { TravelGrid } from '@/travel/components/TravelGrid'
 import TravelSearchForm from '@/travel/components/TravelSearchForm'
+import { useTravel } from '@/travel/hooks/useTravel'
+import { TravelCardSkeleton } from "@/travel/components/TravelCardSkeleton"
 
 export const HomePage = () => {
+  const { getLastTravels, travels, isLoading } = useTravel()
+
+  useEffect(() => {
+    getLastTravels()
+  }, [])
+
   return (
     <main>
       <div className="space-y-4">
@@ -14,7 +24,9 @@ export const HomePage = () => {
 
       <h2 className="pt-7 pb-4 text-center">Próximos viajes</h2>
 
-      <TravelGrid />
+      {isLoading && <TravelCardSkeleton />}
+
+      <TravelGrid travels={travels} />
 
     </main>
   )

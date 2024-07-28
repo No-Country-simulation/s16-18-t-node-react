@@ -3,10 +3,28 @@ import { Link } from "react-router-dom"
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 
-import { EmailIcon, FillLockIcon } from "@icons"
 import { CustomInputFormik } from "@ui"
+import toast from "react-hot-toast";
+import { useAuth } from "../hooks/useAuth";
+import { Gender, RegisterRequestData } from "../interfaces/auth.interface";
 
-const INITIAL_VALUES = {
+//todo: will be replaced with RegisterRequestData
+interface RegisterFormValues {
+  name: string;
+  lastname: string;
+  birthday: string;
+  dni: string;
+  gender: string;
+  country: string;
+  location: string;
+  email: string;
+  phoneNumber: string;
+  password: string;
+  confirmPassword: string;
+  terms: boolean;
+}
+
+const INITIAL_VALUES: RegisterFormValues = {
   name: '',
   lastname: '',
   birthday: '',
@@ -33,7 +51,7 @@ const validationSchema = Yup.object({
     .required('El DNI es obligatorio'),
   gender: Yup.string()
     .required('El género es obligatorio')
-    .oneOf(['1', '2'], 'Selecciona una opción válida'),
+    .oneOf(['MALE', 'FEMALE'], 'Selecciona una opción válida'),
   country: Yup.string()
     .required('El país es obligatorio'),
   location: Yup.string()
@@ -57,11 +75,31 @@ export const RegisterPage = () => {
   const { handleSubmit, getFieldProps, errors }
     = useFormik({
       initialValues: INITIAL_VALUES,
-      onSubmit: value => console.log(value),
+      onSubmit: value => handleRegisterSubmit(value),
       validationSchema: validationSchema,
       validateOnChange: true,
       validateOnBlur: false
     })
+
+  const { onRegister } = useAuth()
+
+  const handleRegisterSubmit = (value: RegisterFormValues) => {
+    const { name, lastname, dni, email, gender, password, phoneNumber } = value
+
+    const data: RegisterRequestData = {
+      name: name + lastname,
+      dni, email,
+      gender: (gender as Gender),
+      password,
+      phone_number: phoneNumber
+    }
+
+    toast.promise(onRegister(data), {
+      loading: 'Cargando...',
+      success: 'Bienvenido',
+      error: error => error
+    })
+  }
 
   return (
     <div className="text-center pt-8 pb-20">
@@ -81,8 +119,8 @@ export const RegisterPage = () => {
 
         <select className="rounded-lg border bg-transparent border-primary w-full h-[60px] px-4 outline-none text-secondary" {...getFieldProps('gender')}>
           <option value="">Selecciona una opción</option>
-          <option value="1">Masculino</option>
-          <option value="2">Femenino</option>
+          <option value="MALE">Masculino</option>
+          <option value="FEMALE">Femenino</option>
         </select>
 
         {errors?.gender && <p className="text-start text-red-600">{errors?.gender}</p>}

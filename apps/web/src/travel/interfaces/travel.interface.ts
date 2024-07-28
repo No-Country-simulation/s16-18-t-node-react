@@ -2,7 +2,7 @@ export interface Travel {
   id:          string;
   origin:      string;
   destination: string;
-  startDate:   Date;
+  startDate:   string;
   hour:        string;
   price:       number;
   isActive:    boolean;
