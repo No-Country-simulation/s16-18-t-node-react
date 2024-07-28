@@ -1,8 +1,6 @@
 import { api } from "@/common/utils"
 import { SearchTravelsQueryParams, Travel } from "../interfaces/travel.interface"
 
-
-
 export const getTravelById = async (id: string) => {
   const travel = await api.get(`travel/${id}`)
   console.log(travel.data)
