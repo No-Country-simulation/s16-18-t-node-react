@@ -6,7 +6,6 @@ import { paymentRouter } from "@/payment/router/payment.router";
 import { authRouter } from "@/auth/router/auth.router";
 import { profileRouter } from "@/user/router/user.router";
 import { Layout } from "../layouts/Layout";
-import path from "path";
 
 export const privateRouter: RouteObject[] = ([
   {
@@ -20,17 +19,17 @@ export const privateRouter: RouteObject[] = ([
     ],
   },
   {
-    path: '/travel',
+    path: 'travel/*',
     element: <Layout />,
     children: travelRouter
   },
   {
-    path: '/payment',
+    path: 'payment/*',
     element: <Layout />,
     children: paymentRouter
   },
   {
-    path: '/profile',
+    path: 'profile/*',
     element: <Layout />,
     children: profileRouter
   },
@@ -45,8 +44,4 @@ export const router: RouteObject[] = ([
     path: 'auth/*',
     children: authRouter,
   },
-  {
-    path: '*',
-    element: <Navigate to='/auth/login' />
-  }
 ])
