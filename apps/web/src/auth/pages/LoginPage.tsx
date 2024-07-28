@@ -31,7 +31,6 @@ export const LoginPage = () => {
   const { onLogin } = useAuth()
 
   const handleLoginSubmit = async (data: LoginRequestData) => {
-    // await onLogin(data)
     toast.promise(onLogin(data), {
       loading: 'Cargando...',
       success: 'Bienvenido',

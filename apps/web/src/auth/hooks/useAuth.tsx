@@ -18,7 +18,16 @@ export const useAuth = () => {
       })
   }
 
+  const onRenewToken = async () => {
+    userCheckingStore()
+
+    authService.renewToken()
+      .then(user => loginStore(user))
+      .catch(() => logoutStore())
+  }
+
   return {
-    onLogin
+    onLogin,
+    onRenewToken
   }
 }

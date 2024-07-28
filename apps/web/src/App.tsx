@@ -1,24 +1,32 @@
+import { useEffect } from 'react'
 import { Outlet, useNavigate } from 'react-router-dom'
 
 import { Toaster } from 'react-hot-toast'
 
 import { Navbar } from './app/components/Navbar'
 import { Footer } from './app/components/Footer'
-// import { useBoundStore } from './store/bound.store'
-// import { useEffect } from 'react'
-// import { AUTH_STATUS } from './consts'
+import { useBoundStore } from './store/bound.store'
+import { AUTH_STATUS } from './consts'
+import { useAuth } from './auth/hooks/useAuth'
 
 function App() {
 
-  // const navigate = useNavigate()
-  // const userStatus = useBoundStore(state => state.status)
+  const navigate = useNavigate()
+  const userStatus = useBoundStore(state => state.status)
 
-  // useEffect(() => {
-  //   if (userStatus === AUTH_STATUS.AUTHENTICATED) {
-  //     navigate('/')
-  //   }
-  // },
-  //   [])
+  const { onRenewToken } = useAuth()
+
+  useEffect(() => {
+    onRenewToken()
+  }, [])
+
+  useEffect(() => {
+    if (userStatus === AUTH_STATUS.AUTHENTICATED) {
+      navigate('/')
+    } else {
+      navigate('/auth/login')
+    }
+  }, [navigate, userStatus])
 
   return (
     <div className="h-screen flex flex-col">
