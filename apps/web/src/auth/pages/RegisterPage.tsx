@@ -102,7 +102,7 @@ export const RegisterPage = () => {
   }
 
   return (
-    <div className="text-center pt-8 pb-20">
+    <div className="flex flex-col text-center px-4 py-20">
       <h2>Registrarme</h2>
 
       <p className="text-primary pt-2 pb-8">Datos personales</p>
