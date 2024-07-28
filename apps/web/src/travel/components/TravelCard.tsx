@@ -15,12 +15,12 @@ export const TravelCard = ({ origin, destination, driverImage, driverRating, sta
   return (
     <div>
       <div className="bg-[#E7E0FA] rounded-t-xl flex justify-between py-3 px-5">
-        <div className="space-y-1 truncate mr-4 space-y-4">
+        <div className=" truncate mr-4 space-y-4">
           <div className="flex items-center gap-2">
             <span><MapPointerIcon /></span>
             <div>
-              <p>ORIGEN</p>
-              <p className="truncate text-primary">{origin}</p>
+              <p className="font-medium">ORIGEN</p>
+              <p className="truncate font-light">{origin}</p>
             </div>
           </div>
 
@@ -28,7 +28,7 @@ export const TravelCard = ({ origin, destination, driverImage, driverRating, sta
             <span><MapPointerIcon /></span>
             <div>
               <p>DESTINO</p>
-              <p className="truncate text-primary">{destination}</p>
+              <p className="truncate text-secondary font-light">{destination}</p>
             </div>
           </div>
         </div>

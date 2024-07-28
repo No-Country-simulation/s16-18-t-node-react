@@ -1,6 +1,7 @@
-import { CustomInput } from '@ui'
-import { CalendarIcon, ExchangeIcon, Filter, MapPointerIcon, NoKids, NoPets, NoSmoking, UserIcon } from '@/common/components/icons'
 import { useState } from 'react'
+
+import { CustomInput } from '@ui'
+import { ExchangeIcon, Filter, MapPointerIcon, NoKids, NoPets, NoSmoking, UserIcon } from '@/common/components/icons'
 import TravelFilterOption from './TravelFilterOption'
 import { SearchBtn } from '@/app/components/SearchBtn'
 
