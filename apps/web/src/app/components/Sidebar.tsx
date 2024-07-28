@@ -1,7 +1,8 @@
-import { useAuth } from "@/auth/hooks/useAuth"
-import { LogoutIcon } from "@/common/components/icons/Logout"
 import { cn } from "@/common/utils"
+
+import { useAuth } from "@/auth/hooks/useAuth"
 import { useBoundStore } from "@/store/bound.store"
+import { LogoutIcon } from "@icons"
 
 const Sidebar = () => {
   const { onLogout } = useAuth()
