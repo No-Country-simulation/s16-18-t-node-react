@@ -8,6 +8,7 @@ import { Footer } from './app/components/Footer'
 import { useBoundStore } from './store/bound.store'
 import { AUTH_STATUS } from './consts'
 import { useAuth } from './auth/hooks/useAuth'
+import Sidebar from './app/components/Sidebar'
 
 function App() {
 
@@ -29,11 +30,13 @@ function App() {
   }, [navigate, userStatus])
 
   return (
-    <div className="h-screen flex flex-col">
+    <div className="flex flex-col min-h-screen">
       <Toaster
         position="top-right"
         reverseOrder={false}
       />
+
+      <Sidebar />
 
       <div className='flex-1 px-9'>
         <Navbar />

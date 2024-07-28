@@ -1,3 +1,5 @@
+import Cookies from 'js-cookie'
+
 import { useBoundStore } from '@/store/bound.store'
 import { LoginRequestData } from '../interfaces/auth.interface'
 import * as authService from '../services/auth.service'
@@ -6,6 +8,8 @@ export const useAuth = () => {
   const loginStore = useBoundStore(state => state.onLogin)
   const logoutStore = useBoundStore(state => state.onLogout)
   const userCheckingStore = useBoundStore(state => state.onChecking)
+
+  const closeMenu = useBoundStore(state => state.close)
 
   const onLogin = async (loginData: LoginRequestData) => {
     userCheckingStore()
@@ -26,8 +30,16 @@ export const useAuth = () => {
       .catch(() => logoutStore())
   }
 
+  const onLogout = () => {
+    logoutStore()
+    closeMenu()
+
+    Cookies.remove('access_token')
+  }
+
   return {
     onLogin,
-    onRenewToken
+    onRenewToken,
+    onLogout
   }
 }
