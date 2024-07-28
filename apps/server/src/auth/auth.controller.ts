@@ -19,7 +19,7 @@ export class AuthController {
     return res
       .cookie('access_token', token, {
         sameSite: 'strict',
-        httpOnly: true,
+        // httpOnly: true,
         maxAge: 3600000,
       })
       .send(user)
@@ -41,7 +41,7 @@ export class AuthController {
     return res
       .cookie('access_token', token, {
         sameSite: 'strict',
-        httpOnly: true,
+        // httpOnly: true,
         maxAge: 3600000,
       })
       .send(user)
