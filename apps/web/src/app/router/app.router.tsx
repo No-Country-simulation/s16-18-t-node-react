@@ -1,18 +1,17 @@
-import { createBrowserRouter } from "react-router-dom";
+import { Navigate, RouteObject } from "react-router-dom";
 
-import App from "@/App";
 import { HomePage } from "@/app/pages/HomePage";
-import TravelFilterPage from "../pages/TravelFilterPage";
-
 import { travelRouter } from "@/travel/router/travel.router";
 import { paymentRouter } from "@/payment/router/payment.router";
 import { authRouter } from "@/auth/router/auth.router";
 import { profileRouter } from "@/user/router/user.router";
+import { Layout } from "../layouts/Layout";
+import path from "path";
 
-export const router = createBrowserRouter([
+export const privateRouter: RouteObject[] = ([
   {
     path: '/',
-    element: <App />,
+    element: <Layout />,
     children: [
       {
         index: true,
@@ -22,22 +21,32 @@ export const router = createBrowserRouter([
   },
   {
     path: '/travel',
-    element: <App />,
+    element: <Layout />,
     children: travelRouter
   },
   {
     path: '/payment',
-    element: <App />,
+    element: <Layout />,
     children: paymentRouter
   },
   {
-    path: '/auth',
-    element: <App />,
+    path: '/profile',
+    element: <Layout />,
+    children: profileRouter
+  },
+  {
+    path: '*',
+    element: <Navigate to='/' />
+  }
+]);
+
+export const router: RouteObject[] = ([
+  {
+    path: 'auth/*',
     children: authRouter,
   },
   {
-    path: '/profile',
-    element: <App />,
-    children: profileRouter
+    path: '*',
+    element: <Navigate to='/auth/login' />
   }
-]);
+])
