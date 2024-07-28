@@ -1,4 +1,4 @@
-type Gender = 'MALE' | 'FEMALE'
+export type Gender = 'MALE' | 'FEMALE'
 type Role = 'DEFAULT' | 'ADMIN'
 
 export interface User {
@@ -15,4 +15,13 @@ export interface User {
 export interface LoginRequestData {
   email: string
   password: string
+}
+
+export interface RegisterRequestData {
+  name:         string;
+  phone_number: string;
+  dni:          string;
+  email:        string;
+  password:     string;
+  gender:       Gender
 }
