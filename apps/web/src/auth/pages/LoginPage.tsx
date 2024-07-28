@@ -39,7 +39,7 @@ export const LoginPage = () => {
   }
 
   return (
-    <div className="text-center pt-8">
+    <div className="flex flex-col text-center px-4 pt-20">
       <h2 className="pb-8">Iniciar sesión</h2>
 
       <form onSubmit={handleSubmit} className="space-y-4 pb-6">

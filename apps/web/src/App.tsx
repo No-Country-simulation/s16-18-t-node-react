@@ -1,18 +1,15 @@
 import { useEffect } from 'react'
-import { Outlet, useNavigate } from 'react-router-dom'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 import { Toaster } from 'react-hot-toast'
 
-import { Navbar } from './app/components/Navbar'
-import { Footer } from './app/components/Footer'
 import { useBoundStore } from './store/bound.store'
 import { AUTH_STATUS } from './consts'
 import { useAuth } from './auth/hooks/useAuth'
-import Sidebar from './app/components/Sidebar'
+
+import * as routers from './app/router/app.router'
 
 function App() {
-
-  const navigate = useNavigate()
   const userStatus = useBoundStore(state => state.status)
 
   const { onRenewToken } = useAuth()
@@ -21,31 +18,21 @@ function App() {
     onRenewToken()
   }, [])
 
-  useEffect(() => {
-    if (userStatus === AUTH_STATUS.AUTHENTICATED) {
-      navigate('/')
-    } else {
-      navigate('/auth/login')
-    }
-  }, [navigate, userStatus])
+  if (userStatus === AUTH_STATUS.CHECKING) return <h1>Cargando...</h1>
+
+  const routerAuthorize = userStatus === AUTH_STATUS.AUTHENTICATED
+    ? routers.privateRouter
+    : routers.router
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <>
       <Toaster
         position="top-right"
         reverseOrder={false}
       />
 
-      <Sidebar />
-
-      <div className='flex-1 px-9'>
-        <Navbar />
-
-        <Outlet />
-      </div>
-
-      <Footer className='px-9' />
-    </div>
+      <RouterProvider router={createBrowserRouter(routerAuthorize)} />
+    </>
   )
 }
 
