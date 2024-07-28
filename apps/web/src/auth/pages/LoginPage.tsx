@@ -2,11 +2,15 @@ import { Link } from "react-router-dom"
 
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
+import { toast } from 'react-hot-toast'
 
 import { EmailIcon, FillLockIcon } from "@icons"
 import { CustomInputFormik } from "@ui"
 
-const INITIAL_VALUES = {
+import { useAuth } from "../hooks/useAuth"
+import { LoginRequestData } from "../interfaces/auth.interface"
+
+const INITIAL_VALUES: LoginRequestData = {
   email: '',
   password: ''
 }
@@ -17,12 +21,22 @@ const validationSchema = Yup.object({
 })
 
 export const LoginPage = () => {
-  const { handleSubmit, getFieldProps, errors }
+  const { handleSubmit, getFieldProps, errors, isSubmitting }
     = useFormik({
       initialValues: INITIAL_VALUES,
-      onSubmit: value => console.log(value),
+      onSubmit: data => handleLoginSubmit(data),
       validationSchema: validationSchema,
     })
+
+  const { onLogin } = useAuth()
+
+  const handleLoginSubmit = async (data: LoginRequestData) => {
+    toast.promise(onLogin(data), {
+      loading: 'Cargando...',
+      success: 'Bienvenido',
+      error: error => error
+    })
+  }
 
   return (
     <div className="text-center pt-8">
@@ -36,7 +50,7 @@ export const LoginPage = () => {
         <div className="space-y-4">
           <a href="#" className="hover:underline text-sm text-primary">¿Olvidaste tu contraseña?</a>
 
-          <button type="submit" className='bg-tertiary py-3 text-base text-white font-medium rounded-full w-full hover:bg-tertiary/80'>Iniciar sesión</button>
+          <button type="submit" className='bg-tertiary py-3 text-base text-white font-medium rounded-full w-full hover:bg-tertiary/80 disabled:bg-tertiary/50' disabled={isSubmitting}>Iniciar sesión</button>
         </div>
       </form>
 
