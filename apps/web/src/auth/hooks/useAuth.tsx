@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie'
 
 import { useBoundStore } from '@/store/bound.store'
-import { LoginRequestData } from '../interfaces/auth.interface'
+import { LoginRequestData, RegisterRequestData } from '../interfaces/auth.interface'
 import * as authService from '../services/auth.service'
 
 export const useAuth = () => {
@@ -22,6 +22,11 @@ export const useAuth = () => {
       })
   }
 
+  const onRegister = async (registerData: RegisterRequestData) => {
+    return authService.registerUser(registerData)
+      .then(user => loginStore(user))
+  }
+
   const onRenewToken = async () => {
     userCheckingStore()
 
@@ -39,6 +44,7 @@ export const useAuth = () => {
 
   return {
     onLogin,
+    onRegister,
     onRenewToken,
     onLogout
   }
