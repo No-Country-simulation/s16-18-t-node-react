@@ -27,12 +27,16 @@ export const useAuth = () => {
       .then(user => loginStore(user))
   }
 
-  const onRenewToken = async () => {
+  const onCheckAuthToken = async () => {
     userCheckingStore()
 
-    authService.renewToken()
-      .then(user => loginStore(user))
-      .catch(() => logoutStore())
+    try {
+
+      const user = await authService.renewToken()
+      loginStore(user)
+    } catch (error) {
+      logoutStore()
+    }
   }
 
   const onLogout = () => {
@@ -45,7 +49,7 @@ export const useAuth = () => {
   return {
     onLogin,
     onRegister,
-    onRenewToken,
+    onCheckAuthToken,
     onLogout
   }
 }
