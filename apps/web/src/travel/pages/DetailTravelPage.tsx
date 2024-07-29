@@ -1,47 +1,63 @@
 import { useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 import { Avatar } from '@/common/components/ui'
-import { NoKids, CalendarIcon, MapPointerIcon, NoPets, NoSmoking, CarIcon, CalendarV2Icon, ClockIcon, CoinIcon, StarIcon } from '@icons'
+import { NoKids, MapPointerIcon, NoPets, NoSmoking, CarIcon, CalendarV2Icon, ClockIcon, CoinIcon, StarIcon } from '@icons'
+import { useTravel } from '../hooks/useTravel'
+import { TravelDetailSkeleton } from '../components/TravelDetailSkeleton'
 
 export const DetailTravelPage = () => {
   const { id } = useParams()
+  const navigate = useNavigate()
+  const { isLoading, onGetTravelById, travels } = useTravel()
+
+  const findTravelById = () => {
+    if (!id) return
+
+    onGetTravelById(id)
+      .catch(() => navigate('/travel/404'))
+  }
 
   useEffect(() => {
-    //* get travel
+    findTravelById()
   }, [])
 
+  if (isLoading) return <TravelDetailSkeleton />  
+
   return (
-    <section className='space-y-4'>
+    <section className='space-y-4 pb-20'>
       <div className="grid grid-cols-5">
         <div className="space-y-2 col-span-3">
           <div className='relative flex flex-col gap-2 bg-[#E7E0FA] p-3'>
-            <div className='border-s h-[15.5px] border-dashed absolute top-5 left-[7.5px] border-primary'></div>
+
+            <div className='border-s h-[15.5px] border-dashed absolute top-8 left-[19.4px] border-secondary'></div>
 
             <div className='flex gap-2 items-center'>
               <span className='pl-0.5'><MapPointerIcon /></span>
-              <p className='text-base truncate'>San Fernando</p>
+              <p className='text-base truncate'>{travels[0]?.origin}</p>
             </div>
 
             <div className='flex gap-2 items-center'>
               <span className='pl-0.5'><MapPointerIcon /></span>
-              <p className='text-base truncate'>Rancagua</p>
+              <p className='text-base truncate'>{travels[0]?.destination}</p>
             </div>
           </div>
           <div className="flex flex-col gap-2 p-2">
             <div className='flex gap-2 items-center truncate'>
               <span><CalendarV2Icon /></span>
-              <p className='text-base truncate'>14 de Agosto 2024</p>
+              {/* <p className='text-base truncate'>14 de Agosto 2024</p> */}
+              <p className='text-base truncate'>{travels[0]?.startDate}</p>
             </div>
 
             <div className='flex gap-2 items-center truncate'>
               <span><ClockIcon /></span>
-              <p className='text-base truncate'>15:30hs</p>
+              {/* <p className='text-base truncate'>15:30hs</p> */}
+              <p className='text-base truncate'>{travels[0]?.hour}</p>
             </div>
 
             <div className='flex items-center gap-2 border-y-2 py-2'>
               <CoinIcon />
-              <p className='font-semibold text-lg'>$16.000</p>
+              <p className='font-semibold text-lg'>{travels[0]?.price}</p>
               <a className='underline text-xs text-secondary mt-0.5'>Más info.</a>
             </div>
 
@@ -56,9 +72,11 @@ export const DetailTravelPage = () => {
           </div>
 
         </div>
-        <div className="">
+
+        <div className="pl-4">
           <CarIcon />
         </div>
+
       </div>
       <div className=' [&>div]:py-5 px-4'>
         <div className='flex items-center gap-1'>
