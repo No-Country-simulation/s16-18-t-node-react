@@ -2,6 +2,7 @@ import { cn } from '@/common/utils'
 
 import { MainBtn } from './MainBtn'
 import { HomeIcon, BellIcon, } from '@icons'
+import { Link } from 'react-router-dom'
 
 export const Footer = ({ className }: { className?: string }) => {
   return (
@@ -11,13 +12,13 @@ export const Footer = ({ className }: { className?: string }) => {
     )}>
 
 
-      <HomeIcon fillColor='#652BB3' />
+      <Link to="/" className='hover:cursor-pointer z-10'><HomeIcon fillColor='#652BB3' /></Link>
 
       <div className="absolute inset-x-0 flex justify-center -top-8">
         <MainBtn />
       </div>
 
-      <BellIcon fillColor='#652BB3' />
+      <Link to="/notifications" className='hover:cursor-pointer z-10'><BellIcon fillColor='#652BB3' /></Link>      
     </footer>
   )
 }
