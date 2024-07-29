@@ -13,6 +13,7 @@ export const TravelGrid = ({ travels }: Props) => {
         travels?.map(travel => (
           <TravelCard
             key={travel.id}
+            travelId={travel.id}
             availableSeats={3}
             origin={travel.origin}
             destination={travel.destination}
