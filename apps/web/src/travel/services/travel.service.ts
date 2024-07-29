@@ -1,9 +1,13 @@
 import { api } from "@/common/utils"
 import { SearchTravelsQueryParams, Travel } from "../interfaces/travel.interface"
 
-export const getTravelById = async (id: string) => {
-  const travel = await api.get(`travel/${id}`)
-  console.log(travel.data)
+export const getTravelById = async (travelId: string) => {
+  try {
+    const { data } = await api.get<Travel>(`travel/find-travel/${travelId}`)
+    return data
+  } catch (error) {
+    throw 'Error'
+  }
 }
 
 export const getTravelsByQueryParams = async (data: SearchTravelsQueryParams) => {
@@ -21,6 +25,6 @@ export const getTravelsByQueryParams = async (data: SearchTravelsQueryParams) =>
     const { data } = await api.get<Travel[]>(`travel/search?${queryParams}`);
     return data
   } catch (error) {
-    throw 'A error'
+    throw 'Error'
   }
 };
