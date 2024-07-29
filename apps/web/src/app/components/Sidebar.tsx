@@ -3,6 +3,7 @@ import { cn } from "@/common/utils"
 import { useAuth } from "@/auth/hooks/useAuth"
 import { useBoundStore } from "@/store/bound.store"
 import { LogoutIcon } from "@icons"
+import { Link } from "react-router-dom"
 
 const Sidebar = () => {
   const { onLogout } = useAuth()
@@ -24,6 +25,11 @@ const Sidebar = () => {
           <LogoutIcon />
           <span>Cerrar sesión</span>
         </button>
+
+        <Link onClick={closeMenu} to='/profile' className="px-4 py-3 flex items-center gap-2 rounded-md text-secondary w-full hover:bg-tertiary hover:text-gray-200">
+          <span>Mi Perfil</span>
+        </Link>
+
       </aside>
     </>
   )

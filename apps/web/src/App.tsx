@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 import { Toaster } from 'react-hot-toast'
@@ -8,17 +8,18 @@ import { AUTH_STATUS } from './consts'
 import { useAuth } from './auth/hooks/useAuth'
 
 import * as routers from './app/router/app.router'
+import { Spinner } from './common/components/ui/Spinner'
 
 function App() {
   const userStatus = useBoundStore(state => state.status)
 
-  const { onRenewToken } = useAuth()
+  const { onCheckAuthToken } = useAuth()
 
   useEffect(() => {
-    onRenewToken()
-  }, [])
+    onCheckAuthToken()
+  }, []);
 
-  if (userStatus === AUTH_STATUS.CHECKING) return <h1>Cargando...</h1>
+  if (userStatus === AUTH_STATUS.CHECKING) return <Spinner />
 
   const routerAuthorize = userStatus === AUTH_STATUS.AUTHENTICATED
     ? routers.privateRouter

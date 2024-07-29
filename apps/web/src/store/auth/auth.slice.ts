@@ -16,8 +16,8 @@ export interface AuthSlice {
 }
 
 export const createAuthSlice: StateCreator<AuthSlice> = (set) => ({
-  // status: AUTH_STATUS.CHECKING,
-  status: AUTH_STATUS.NOT_AUTHENTICATED,
+  status: AUTH_STATUS.CHECKING,
+  // status: AUTH_STATUS.NOT_AUTHENTICATED,
   user: null,
   // errorMessage: null,
 

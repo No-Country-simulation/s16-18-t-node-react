@@ -1,7 +1,9 @@
 import { CalendarIcon, MapPointerIcon, UserIcon } from "@icons"
 import { Avatar } from "@ui"
+import { useNavigate } from "react-router-dom"
 
 interface Props {
+  travelId: string
   origin: string
   destination: string
   startDate: string
@@ -11,9 +13,16 @@ interface Props {
   availableSeats: number
 }
 
-export const TravelCard = ({ origin, destination, driverImage, driverRating, startDate, availableSeats, driverName }: Props) => {
+export const TravelCard = ({ travelId, origin, destination, driverImage, driverRating, startDate, availableSeats, driverName }: Props) => {
+
+  const navigate = useNavigate()
+
+  const handleClickCard = (travelId: string) => {
+    navigate(`/travel/${travelId}`)
+  }
+
   return (
-    <div>
+    <div onClick={() => handleClickCard(travelId)} className="transform hover:scale-105 hover:cursor-pointer">
       <div className="bg-[#E7E0FA] rounded-t-xl flex justify-between py-3 px-5">
         <div className=" truncate mr-4 space-y-4">
           <div className="flex items-center gap-2">
