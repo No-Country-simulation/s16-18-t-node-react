@@ -4,6 +4,7 @@ import { CustomInput } from '@ui'
 import { ExchangeIcon, Filter, MapPointerIcon, NoKids, NoPets, NoSmoking, UserIcon } from '@/common/components/icons'
 import TravelFilterOption from './TravelFilterOption'
 import { SearchBtn } from '@/app/components/SearchBtn'
+import { useNavigate } from 'react-router-dom'
 
 interface TravelData {
     origin: string
@@ -30,6 +31,8 @@ const initialTravelData: TravelData = {
 const TravelSearchForm = () => {
     const [formValues, setFormValues] = useState<TravelData>(initialTravelData)
     const [show, setShow] = useState<boolean>(false)
+
+    const navigate = useNavigate()
 
     const handleShowFilters = () => {
         setShow(!show)
@@ -67,20 +70,38 @@ const TravelSearchForm = () => {
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        console.log(formValues)
-        alert('enviado')
+
+        const formData = new FormData(e.currentTarget);
+
+        const data = Object.fromEntries(formData.entries());
+
+        const params: Record<string, string> = {}
+
+        Object.keys(data).forEach(key => {
+            const hasValue = data[key] !== undefined && data[key].toString().trim().length > 0
+
+            if (hasValue) {
+                params[key] = data[key]!.toString()
+            }
+        });
+
+        const queryParams = new URLSearchParams(params);
+
+        navigate(`/travel/results?${queryParams}`)
     }
 
     return (
         <form className='flex flex-col gap-6' onSubmit={handleSubmit}>
             <div className='relative'>
                 <CustomInput
+                    name='origin'
                     title='Origen'
                     icon={() => <MapPointerIcon />}
                     placeholder='Ingresa desde donde viajas'
                     style={{ borderBottomLeftRadius: '0', borderBottomRightRadius: '0' }}
                 />
                 <CustomInput
+                    name='destination'
                     title='Destino'
                     icon={() => <MapPointerIcon />}
                     placeholder='Ingresa hasta donde viajas'
@@ -97,9 +118,7 @@ const TravelSearchForm = () => {
                     <h3 className="text-xs text-center">FECHA</h3>
 
                     <div className="flex items-center gap-2">
-                        {/* <CalendarIcon /> */}
-                        <input type="date" value={formValues.startDate} onChange={handleChangeDate} className='text-base text-secondary outline-none w-[120px]' />
-                        {/* <p className='text-base'>{formValues.startDate}</p> */}
+                        <input name='start_date' type="date" value={formValues.startDate} onChange={handleChangeDate} className='text-base text-secondary outline-none w-[120px]' />
                     </div>
                 </div>
 
@@ -122,6 +141,7 @@ const TravelSearchForm = () => {
                 <div>
                     <label className="text-base font-bold text-[#6E7191]">Costo máximo</label>
                     <input
+                        name='max_price'
                         type="range"
                         min="100"
                         max="100000"
