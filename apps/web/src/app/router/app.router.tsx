@@ -44,4 +44,8 @@ export const router: RouteObject[] = ([
     path: 'auth/*',
     children: authRouter,
   },
+  {
+    path: '*',
+    element: <Navigate to='/auth/login' />
+  }
 ])
