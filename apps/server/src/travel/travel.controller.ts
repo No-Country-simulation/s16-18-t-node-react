@@ -31,12 +31,6 @@ export class TravelController {
     return await this.travelService.NewPassenger(travelID, user)
   }
 
-  @ApiOperation({ description: 'This find disponibility' })
-  @Get('passengerDisponibility/:id')
-  async findDisponibility(@Param('id', ParseUUIDPipe) travelID: string) {
-    return await this.travelService.findDisponibilityTravel(travelID)
-  }
-
   @ApiOperation({ description: 'This is for cancell travel for passenger' })
   @Auth()
   @Delete('cancell-passenger/:travelID')
