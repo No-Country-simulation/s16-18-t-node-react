@@ -6,10 +6,10 @@ import { useTravel } from '@/travel/hooks/useTravel'
 import { TravelCardSkeleton } from "@/travel/components/TravelCardSkeleton"
 
 export const HomePage = () => {
-  const { getLastTravels, travels, isLoading } = useTravel()
+  const { onGetLastTravels, travels, isLoading } = useTravel()
 
   useEffect(() => {
-    getLastTravels()
+    onGetLastTravels()
   }, [])
 
   return (
