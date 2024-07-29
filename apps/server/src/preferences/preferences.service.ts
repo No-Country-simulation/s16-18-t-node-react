@@ -32,4 +32,24 @@ export class PreferencesService {
 
     return rating
   }
+
+  async findPreferenceTravel(travelID) {
+    const data = await this.prisma.preferenceTravel
+      .findMany({
+        where: {
+          travelID,
+        },
+        select: {
+          preference: {
+            select: {
+              name: true,
+              id: true,
+            },
+          },
+        },
+      })
+      .catch((e) => handleErrorException(e))
+
+    return data.flatMap((a) => a.preference)
+  }
 }
