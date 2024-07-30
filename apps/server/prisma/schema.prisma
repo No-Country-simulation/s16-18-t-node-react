@@ -102,6 +102,8 @@ model Travel {
   state            StateTravel        @default(PENDING)
   PreferenceTravel PreferenceTravel[]
   carID            String
+  meetingPoint     String
+  description      String
 
   car             Car               @relation(fields: [carID], references: [id])
   PassengerTravel PassengerTravel[]
