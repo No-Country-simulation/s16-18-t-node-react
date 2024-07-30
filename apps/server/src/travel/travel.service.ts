@@ -159,7 +159,7 @@ export class TravelService {
       const disponibility = await this.findDisponibilityTravel(travelID, travel.carID)
       const driver = await this.findDataDriver(travelID)
 
-      const car = await this.carService.findForID(travel.carID)
+      const { isActive, ...car } = await this.carService.findForID(travel.carID)
 
       return {
         ...travel,
@@ -167,7 +167,7 @@ export class TravelService {
         hour,
         disponibility,
         ...driver,
-        car,
+        car: car,
       }
     } catch (e) {
       handleErrorException(e)
