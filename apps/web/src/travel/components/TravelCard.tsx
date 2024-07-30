@@ -9,7 +9,7 @@ interface Props {
   startDate: string
   driverName: string
   driverImage: string
-  driverRating: string
+  driverRating: number
   availableSeats: number
 }
 
