@@ -15,12 +15,16 @@ export const TravelsFilterResultPage = () => {
 
   useEffect(() => {
     onGetTravelsByQueryParams({ origin, destination, start_date, max_price: Number(max_price) })
-
-    if (!isLoading && travels.length <= 0) navigate('/travel/404')
   }, [])
 
+  useEffect(() => {
+    if (!isLoading && travels.length <= 0) navigate('/travel/404')
+  }, [isLoading, travels])
+
   return (
-    <section>
+    <section className="text-center space-y-8">
+      <h2>Resultados</h2>
+
       <div className="space-y-4">
         {
           isLoading && Array(4).fill(null).map((_, index) => (
