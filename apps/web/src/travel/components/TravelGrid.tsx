@@ -12,15 +12,15 @@ export const TravelGrid = ({ travels }: Props) => {
       {
         travels?.map(travel => (
           <TravelCard
-            key={travel.id}
-            travelId={travel.id}
-            availableSeats={3}
-            origin={travel.origin}
-            destination={travel.destination}
+            key={travel?.id}
+            travelId={travel?.id}
+            availableSeats={travel?.disponibility}
+            origin={travel?.origin}
+            destination={travel?.destination}
             driverImage='notfound'
-            driverName='Manuel'
-            driverRating='4'
-            startDate={travel.startDate}
+            driverName={travel?.driver[0]?.name}
+            driverRating={travel?.rating?.average ?? 0}
+            startDate={travel?.startDate}
           />
         ))
       }

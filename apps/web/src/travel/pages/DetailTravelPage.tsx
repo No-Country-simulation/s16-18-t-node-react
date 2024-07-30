@@ -9,6 +9,7 @@ import { TravelDetailSkeleton } from '../components/TravelDetailSkeleton'
 export const DetailTravelPage = () => {
   const { id } = useParams()
   const navigate = useNavigate()
+
   const { isLoading, onGetTravelById, travels } = useTravel()
 
   const findTravelById = () => {
@@ -24,6 +25,8 @@ export const DetailTravelPage = () => {
 
   if (isLoading) return <TravelDetailSkeleton />  
 
+  const travel = travels[0]
+
   return (
     <section className='space-y-4 pb-20'>
       <div className="grid grid-cols-5">
@@ -34,30 +37,30 @@ export const DetailTravelPage = () => {
 
             <div className='flex gap-2 items-center'>
               <span className='pl-0.5'><MapPointerIcon /></span>
-              <p className='text-base truncate'>{travels[0]?.origin}</p>
+              <p className='text-base truncate'>{travel?.origin}</p>
             </div>
 
             <div className='flex gap-2 items-center'>
               <span className='pl-0.5'><MapPointerIcon /></span>
-              <p className='text-base truncate'>{travels[0]?.destination}</p>
+              <p className='text-base truncate'>{travel?.destination}</p>
             </div>
           </div>
           <div className="flex flex-col gap-2 p-2">
             <div className='flex gap-2 items-center truncate'>
               <span><CalendarV2Icon /></span>
               {/* <p className='text-base truncate'>14 de Agosto 2024</p> */}
-              <p className='text-base truncate'>{travels[0]?.startDate}</p>
+              <p className='text-base truncate'>{travel?.startDate}</p>
             </div>
 
             <div className='flex gap-2 items-center truncate'>
               <span><ClockIcon /></span>
               {/* <p className='text-base truncate'>15:30hs</p> */}
-              <p className='text-base truncate'>{travels[0]?.hour}</p>
+              <p className='text-base truncate'>{travel?.hour}</p>
             </div>
 
             <div className='flex items-center gap-2 border-y-2 py-2'>
               <CoinIcon />
-              <p className='font-semibold text-lg'>{travels[0]?.price}</p>
+              <p className='font-semibold text-lg'>{travel?.price}</p>
               <a className='underline text-xs text-secondary mt-0.5'>Más info.</a>
             </div>
 
@@ -79,31 +82,32 @@ export const DetailTravelPage = () => {
 
       </div>
       <div className=' [&>div]:py-5 px-4'>
+
         <div className='flex items-center gap-1'>
           <span className='size-7'><Avatar /></span>
-          <p className='text-[#034363] text-base font-semibold mr-1'>Claudio</p>
+
+          <p className='text-[#034363] text-base font-semibold mr-1'>{travel?.driver[0].name}</p>
           <StarIcon />
-          <p className='text-[#034363] text-base font-semibold'>4.5</p>
+          <p className='text-[#034363] text-base font-semibold'>{travel?.rating.average ?? 0}</p>
           <span className='text-xs text-secondary'>(Conductor)</span>
         </div>
 
         <div className="border-t-2 flex gap-1">
           <p className='font-bold text-[#6E7191]'>Punto de encuentro:</p>
-          <p className='text-secondary text-xs'>YPF de Galvez y Puan</p>
+          <p className='text-secondary text-xs'>{travel?.meetingPoint}</p>
         </div>
         <div className="border-t-2">
           <p className='text-[#6E7191] text-xs font-[300]'>
-            Viajo de vacaciones a ver a mí familia. Regreso en 1 semana.
-            si me cebas Mates en el Camino sos el Mejor..!
+            {travel?.description}
           </p>
         </div>
         <div className="flex place-items-center gap-5 border-t-2">
-          <div className="h-full w-[70px]">
-            <img className='h-full w-full' src={'https://santaisabel.vtexassets.com/arquivos/ids/160355/Pollo-asado-kg.jpg?v=637469375609970000'}></img>
+          <div className="h-full w-[90px]">
+            <img className='rounded-2xl' src={'https://acroadtrip.blob.core.windows.net/publicaciones-imagenes/Medium/ford/figo-sedan/mx/RT_PU_94a2ea9500a648feb4f66b4864d20920.webp'}></img>
           </div>
           <div className="flex flex-col items-end">
-            <h1 className='font-bold'>***h21</h1>
-            <p>Honda Civic - rojo</p>
+            <h1 className='font-bold'>{`***${travel?.car?.patent.slice(-3)}`}</h1>
+            <p>{`${travel?.car.brand} - ${travel?.car.color}`}</p>
           </div>
         </div>
       </div>
