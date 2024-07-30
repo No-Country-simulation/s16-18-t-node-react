@@ -28,4 +28,10 @@ export class CreateTravelDto {
   @Type(() => CreatePreferenceTravelDto)
   @ValidateNested({ each: true })
   readonly preferences: CreatePreferenceTravelDto[]
+
+  @IsString()
+  readonly meetingPoint: string
+
+  @IsString()
+  readonly description: string
 }

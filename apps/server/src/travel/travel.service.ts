@@ -40,6 +40,9 @@ export class TravelService {
           lte: max_price,
         },
       },
+      orderBy: {
+        startDate: 'desc',
+      },
       skip: (size - 1) * limit,
       take: limit,
       include: {
@@ -156,12 +159,15 @@ export class TravelService {
       const disponibility = await this.findDisponibilityTravel(travelID, travel.carID)
       const driver = await this.findDataDriver(travelID)
 
+      const car = await this.carService.findForID(travel.carID)
+
       return {
         ...travel,
         startDate: date,
         hour,
         disponibility,
         ...driver,
+        car,
       }
     } catch (e) {
       handleErrorException(e)
