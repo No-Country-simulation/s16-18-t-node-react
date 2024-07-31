@@ -1,27 +1,32 @@
-import { MapPointerIcon } from '@icons'
-import { CustomInput } from '@ui'
+import { useEffect } from 'react'
 
 import { TravelGrid } from '@/travel/components/TravelGrid'
+import TravelSearchForm from '@/travel/components/TravelSearchForm'
+import { useTravel } from '@/travel/hooks/useTravel'
+import { TravelCardSkeleton } from "@/travel/components/TravelCardSkeleton"
 
 export const HomePage = () => {
+  const { onGetTravelsByQueryParams, travels, isLoading } = useTravel()
+
+  useEffect(() => {
+    onGetTravelsByQueryParams({ limit: 4 })
+  }, [])
+
   return (
     <main>
       <div className="space-y-4">
 
-        <h2>Busca tu viaje</h2>
+        <h2 className='text-center'>Buscá tu viaje</h2>
 
-        <CustomInput
-          title='Origen'
-          icon={() => <MapPointerIcon />}
-          placeholder='Ingresa desde donde viajas'
-          searchButton
-        />
+        <TravelSearchForm />
 
       </div>
 
-      <h2 className="pt-8 pb-4">Próximos viajes</h2>
+      <h2 className="pt-7 pb-4 text-center">Próximos viajes</h2>
 
-      <TravelGrid />
+      {isLoading && <TravelCardSkeleton />}
+
+      <TravelGrid travels={travels} />
 
     </main>
   )

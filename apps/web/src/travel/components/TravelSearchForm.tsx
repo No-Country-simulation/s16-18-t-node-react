@@ -1,8 +1,10 @@
-import { CustomInput } from '@ui'
-import { Calendar, ExchangeIcon, Filter, NoKids, NoPets, NoSmoking, UserIcon } from '@/common/components/icons'
 import { useState } from 'react'
+
+import { CustomInput } from '@ui'
+import { ExchangeIcon, Filter, MapPointerIcon, NoKids, NoPets, NoSmoking, UserIcon } from '@/common/components/icons'
 import TravelFilterOption from './TravelFilterOption'
 import { SearchBtn } from '@/app/components/SearchBtn'
+import { useNavigate } from 'react-router-dom'
 
 interface TravelData {
     origin: string
@@ -16,8 +18,8 @@ interface TravelData {
 }
 
 const initialTravelData: TravelData = {
-    origin: 'Mar del Plata',
-    destination: 'Capital Federal',
+    origin: '',
+    destination: 'sdf',
     startDate: '',
     totalCost: 100000,
     noPets: false,
@@ -29,6 +31,8 @@ const initialTravelData: TravelData = {
 const TravelSearchForm = () => {
     const [formValues, setFormValues] = useState<TravelData>(initialTravelData)
     const [show, setShow] = useState<boolean>(false)
+
+    const navigate = useNavigate()
 
     const handleShowFilters = () => {
         setShow(!show)
@@ -55,27 +59,56 @@ const TravelSearchForm = () => {
             startDate: e.target.value
         }))
     }
+
+    const exchangeValues = () => {
+        setFormValues(prevValues => ({
+            ...prevValues,
+            origin: formValues.destination,
+            destination: formValues.origin
+        }))
+    }
+
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        console.log(formValues)
-        alert('enviado')
+
+        const formData = new FormData(e.currentTarget);
+
+        const data = Object.fromEntries(formData.entries());
+
+        const params: Record<string, string> = {}
+
+        Object.keys(data).forEach(key => {
+            const hasValue = data[key] !== undefined && data[key].toString().trim().length > 0
+
+            if (hasValue) {
+                params[key] = data[key]!.toString()
+            }
+        });
+
+        const queryParams = new URLSearchParams(params);
+
+        navigate(`/travel/results?${queryParams}`)
     }
 
     return (
         <form className='flex flex-col gap-6' onSubmit={handleSubmit}>
             <div className='relative'>
                 <CustomInput
+                    name='origin'
                     title='Origen'
+                    icon={() => <MapPointerIcon />}
                     placeholder='Ingresa desde donde viajas'
                     style={{ borderBottomLeftRadius: '0', borderBottomRightRadius: '0' }}
                 />
                 <CustomInput
+                    name='destination'
                     title='Destino'
+                    icon={() => <MapPointerIcon />}
                     placeholder='Ingresa hasta donde viajas'
                     style={{ borderTopLeftRadius: '0', borderTopRightRadius: '0' }}
                 />
 
-                <div className='bg-white p-[5px] grid place-items-center border-2 border-secondary rounded-sm absolute top-[45px] right-3'>
+                <div onClick={exchangeValues} className='bg-tertiary p-[5px] cursor-pointer grid place-items-center rounded-sm absolute top-[45px] right-3'>
                     <ExchangeIcon />
                 </div>
             </div>
@@ -85,9 +118,7 @@ const TravelSearchForm = () => {
                     <h3 className="text-xs text-center">FECHA</h3>
 
                     <div className="flex items-center gap-2">
-                        {/* <Calendar /> */}
-                        <input type="date" value={formValues.startDate} onChange={handleChangeDate} className='text-sm text-secondary outline-none w-[108px]' />
-                        {/* <p>{formValues.startDate}</p> */}
+                        <input name='start_date' type="date" value={formValues.startDate} onChange={handleChangeDate} className='text-base text-secondary outline-none w-[120px]' />
                     </div>
                 </div>
 
@@ -96,20 +127,21 @@ const TravelSearchForm = () => {
 
                     <div className="flex items-center gap-2">
                         <UserIcon />
-                        <p>1</p>
+                        <p className='text-base'>1</p>
                     </div>
                 </div>
             </div>
 
             <div className="flex justify-center items-center gap-3">
                 <Filter />
-                <span onClick={handleShowFilters} className="underline text-gray-500 cursor-pointer">Filtro avanzado</span>
+                <span onClick={handleShowFilters} className="underline text-secondary text-sm font-bold cursor-pointer">Filtro avanzado</span>
             </div>
 
-            <div className={`${show ? 'block' : 'hidden'} flex flex-col justify-center items-center gap-3 p-9 border border-primary rounded-[10px]`}>
+            <div className={`${show ? 'block' : 'hidden'} flex flex-col justify-center items-center gap-3 p-8 border border-primary rounded-[10px]`}>
                 <div>
-                    <label className="text-xl text-secondary">Costo máximo</label>
+                    <label className="text-base font-bold text-[#6E7191]">Costo máximo</label>
                     <input
+                        name='max_price'
                         type="range"
                         min="100"
                         max="100000"
@@ -120,7 +152,7 @@ const TravelSearchForm = () => {
                 </div>
 
                 <div className="w-full flex flex-col gap-5 text-primary">
-                    <label className="text-xl text-secondary my-3">Preferencias</label>
+                    <label className="text-base font-bold text-[#6E7191] my-1">Preferencias</label>
 
                     <TravelFilterOption
                         title='No mascotas'

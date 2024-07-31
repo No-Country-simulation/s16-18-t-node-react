@@ -4,9 +4,10 @@ import { TravelController } from './travel.controller'
 import { PrismaModule } from '../prisma/prisma.module'
 import { CarModule } from '../car/car.module'
 import { PaymentModule } from 'src/payment/payment.module'
+import { RatingsModule } from 'src/ratings/ratings.module'
 
 @Module({
-  imports: [PrismaModule, CarModule, PaymentModule],
+  imports: [PrismaModule, CarModule, PaymentModule, RatingsModule],
   controllers: [TravelController],
   providers: [TravelService],
 })

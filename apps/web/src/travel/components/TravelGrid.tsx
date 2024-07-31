@@ -1,37 +1,29 @@
+import { Travel } from "../interfaces/travel.interface"
 import { TravelCard } from "./TravelCard"
 
-export const TravelGrid = () => {
+interface Props {
+  travels: Travel[]
+}
+
+export const TravelGrid = ({ travels }: Props) => {
+
   return (
-    <section className="flex flex-col gap-5 pb-4">
-      <TravelCard
-        availableSeats={4}
-        origin='San Fernando, Chilessssssssssssssssssss'
-        destination='Rancagua, Chilesfddddddddddddddddddddd'
-        driverImage='notfound'
-        driverName='Manuel'
-        driverRating='4'
-        startDate={'2024-07-23'}
-      />
-
-      <TravelCard
-        availableSeats={4}
-        origin='San Fernando, Chilessssssssssssssssssss'
-        destination='Rancagua, Chilesfddddddddddddddddddddd'
-        driverImage='notfound'
-        driverName='Manuel'
-        driverRating='4'
-        startDate={'2024-07-23'}
-      />
-
-      <TravelCard
-        availableSeats={4}
-        origin='San Fernando, Chilessssssssssssssssssss'
-        destination='Rancagua, Chilesfddddddddddddddddddddd'
-        driverImage='notfound'
-        driverName='Manuel'
-        driverRating='4'
-        startDate={'2024-07-23'}
-      />
+    <section className="flex flex-col gap-5 mb-16">
+      {
+        travels?.map(travel => (
+          <TravelCard
+            key={travel?.id}
+            travelId={travel?.id}
+            availableSeats={travel?.disponibility}
+            origin={travel?.origin}
+            destination={travel?.destination}
+            driverImage='notfound'
+            driverName={travel?.driver[0]?.name}
+            driverRating={travel?.rating?.average ?? 0}
+            startDate={travel?.startDate}
+          />
+        ))
+      }
     </section>
   )
 }

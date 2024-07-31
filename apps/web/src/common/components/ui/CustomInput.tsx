@@ -7,7 +7,7 @@ type InputProps = React.InputHTMLAttributes<HTMLInputElement>
 interface Props extends InputProps {
   icon?: () => JSX.Element
   searchButton?: boolean
-  title: string
+  title?: string
   handleClick?: () => void
   handleChange?: () => void
 }
@@ -20,8 +20,9 @@ export const CustomInput = ({ handleChange, handleClick, icon, searchButton, tit
         onClick={handleClick}
         onChange={handleChange}
         className={
-          cn("pt-4 pb-2 rounded-lg border border-primary w-full h-[60px] pl-10 pr-16", {
-            'pr-3': !searchButton
+          cn("rounded-lg border border-primary w-full h-[60px] pl-10 pr-16", {
+            'pr-3': !searchButton,
+            'pt-4 pb-2': title 
           })
         }
         {...props}

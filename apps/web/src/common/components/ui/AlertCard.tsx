@@ -17,8 +17,8 @@ export const AlertCard = ({ title, icon, description, children }: Props) => {
         <div className="flex absolute justify-center items-center inset-0">{alertIcon}</div>
       </div>
 
-      {title && <p className="text-primary text-base font-semibold">{title}</p>}
-      {description && <p className="text-center">{description}</p>}
+      {title && <p className="text-primary text-base font-semibold text-center">{title}</p>}
+      {description && <p className="text-right">{description}</p>}
 
       {children}
     </div>

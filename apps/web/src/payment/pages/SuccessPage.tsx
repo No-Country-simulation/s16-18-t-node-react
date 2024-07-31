@@ -4,7 +4,7 @@ import { AlertCard } from "@ui"
 export const SuccessPage = () => {
   return (
     <AlertCard
-      title="¡Tu pago se a realizado con éxito!"
+      title="¡Tu pago se ha realizado con éxito!"
       description="Detalle"
       icon={() => <CheckIcon />}
 

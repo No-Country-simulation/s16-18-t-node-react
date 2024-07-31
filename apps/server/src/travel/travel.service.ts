@@ -1,4 +1,4 @@
-import { BadRequestException, ConflictException, Injectable } from '@nestjs/common'
+import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common'
 
 import { User } from '../auth/interfaces'
 import { CarService } from '../car/car.service'
@@ -11,6 +11,7 @@ import { CreatePreferenceTravelDto } from './dto/preference-travel.dto'
 import { DefaultPreference } from 'src/preferences/enums/default-preference'
 import { PaymentService } from '../payment/payment.service'
 import { PaymentMPDto } from 'src/payment/dto/payment-mp.dto'
+import { RatingsService } from 'src/ratings/ratings.service'
 
 @Injectable()
 export class TravelService {
@@ -18,6 +19,7 @@ export class TravelService {
     private readonly prisma: PrismaService,
     private readonly carService: CarService,
     private readonly paymentService: PaymentService,
+    private readonly ratingService: RatingsService,
   ) {}
 
   async findTravelsByQueryParams(travelQueryParamsDto: TravelQueryParamsDto) {
@@ -41,6 +43,9 @@ export class TravelService {
           lte: max_price,
         },
       },
+      orderBy: {
+        startDate: 'desc',
+      },
       skip: (size - 1) * limit,
       take: limit,
       include: {
@@ -53,12 +58,19 @@ export class TravelService {
       },
     })
 
-    return travelsFound.map((travel) => ({
-      ...travel,
-      startDate: getSeparatedDate(travel.startDate).date,
-      hour: getSeparatedDate(travel.hour).hour,
-      price: currency ? getFormatedPrice({ currency, value: travel.price, locale }) : travel.price,
-    }))
+    const resolve = travelsFound.map(async (travel) => {
+      const driver = await this.findDataDriver(travel.id)
+      return {
+        ...travel,
+        startDate: getSeparatedDate(travel.startDate).date,
+        hour: getSeparatedDate(travel.hour).hour,
+        price: currency ? getFormatedPrice({ currency, value: travel.price, locale }) : travel.price,
+        disponibility: await this.findDisponibilityTravel(travel.id, travel.carID),
+        ...driver,
+      }
+    })
+
+    return await Promise.all(resolve)
   }
 
   async create(createTravelDto: CreateTravelDto, user: User) {
@@ -103,7 +115,10 @@ export class TravelService {
           return await this.changeStatePassenger(user.id, travelID, 'OK')
         }
       }
-      const capacity = await this.findDisponibilityTravel(travelID)
+
+      const { carID } = await this.findTravelByID(travelID)
+
+      const capacity = await this.findDisponibilityTravel(travelID, carID)
       if (capacity === 0) throw new ConflictException('There are no hundreds available')
 
       const payment = await this.paymentService.paymentMP(paymentMPDto, user)
@@ -120,8 +135,9 @@ export class TravelService {
     }
   }
 
-  async findDisponibilityTravel(travelID: string) {
-    const { carID } = await this.findTravelByID(travelID)
+  async findDisponibilityTravel(travelID: string, carID: string) {
+    // const travel = await this.findTravelByID(travelID)
+
     const { capacity } = await this.carService.findForID(carID)
 
     const cantPassenger = await this.prisma.passengerTravel.findMany({
@@ -137,11 +153,32 @@ export class TravelService {
   }
 
   async findTravelByID(travelID: string) {
-    return await this.prisma.travel
-      .findUnique({
+    try {
+      const travel = await this.prisma.travel.findUnique({
         where: { id: travelID },
       })
-      .catch((e) => handleErrorException(e))
+
+      if (!travel) throw new NotFoundException('Travel not fou nd')
+
+      const date = getSeparatedDate(travel.startDate).date
+      const hour = getSeparatedDate(travel.hour).hour
+
+      const disponibility = await this.findDisponibilityTravel(travelID, travel.carID)
+      const driver = await this.findDataDriver(travelID)
+
+      const { isActive, ...car } = await this.carService.findForID(travel.carID)
+
+      return {
+        ...travel,
+        startDate: date,
+        hour,
+        disponibility,
+        ...driver,
+        car: car,
+      }
+    } catch (e) {
+      handleErrorException(e)
+    }
   }
 
   async findPassengerByID(passengerID: string, travelID: string) {
@@ -218,5 +255,32 @@ export class TravelService {
         if (passenger.gender === 'MALE') throw new BadRequestException('El pasajero no puede ser un hombre en un viaje para mujeres')
       }
     })
+  }
+
+  async findDataDriver(travelID: string) {
+    const data = await this.prisma.travel.findUnique({
+      where: { id: travelID },
+      select: {
+        car: {
+          select: {
+            user: {
+              select: {
+                id: true,
+                userDetail: true,
+              },
+            },
+          },
+        },
+      },
+    })
+
+    const rating = await this.ratingService.findOneAverageDriver(data.car.user.id)
+
+    const driver = data.car.user.userDetail
+
+    return {
+      driver,
+      rating,
+    }
   }
 }

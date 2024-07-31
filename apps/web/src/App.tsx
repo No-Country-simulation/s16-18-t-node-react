@@ -1,19 +1,39 @@
-import { Outlet } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
-import { Navbar } from './app/components/Navbar'
-import { Footer } from './app/components/Footer'
+import { Toaster } from 'react-hot-toast'
+
+import { useBoundStore } from './store/bound.store'
+import { AUTH_STATUS } from './consts'
+import { useAuth } from './auth/hooks/useAuth'
+
+import * as routers from './app/router/app.router'
+import { Spinner } from './common/components/ui/Spinner'
 
 function App() {
+  const userStatus = useBoundStore(state => state.status)
+
+  const { onCheckAuthToken } = useAuth()
+
+  useEffect(() => {
+    onCheckAuthToken()
+  }, []);
+
+  if (userStatus === AUTH_STATUS.CHECKING) return <Spinner />
+
+  const routerAuthorize = userStatus === AUTH_STATUS.AUTHENTICATED
+    ? routers.privateRouter
+    : routers.router
+
   return (
-    <div className="h-screen flex flex-col">
-      <div className='flex-1 px-9'>
-        <Navbar />
+    <>
+      <Toaster
+        position="top-right"
+        reverseOrder={false}
+      />
 
-        <Outlet />
-      </div>
-
-      <Footer className='px-9' />
-    </div>
+      <RouterProvider router={createBrowserRouter(routerAuthorize)} />
+    </>
   )
 }
 

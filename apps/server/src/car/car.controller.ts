@@ -46,4 +46,13 @@ export class CarController {
   async updateIsActive(@Param('id', ParseUUIDPipe) id: string) {
     return await this.carService.isActive(id)
   }
+
+  @ApiOperation({
+    description: 'This endpoint is for find Car for ID',
+  })
+  @Auth()
+  @Get('findCar/:id')
+  async findForID(@Param('id', ParseUUIDPipe) id: string) {
+    return await this.carService.findForID(id)
+  }
 }

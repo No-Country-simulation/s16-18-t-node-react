@@ -92,7 +92,7 @@ export class AuthService {
     return user
   }
 
-  private generateJwt(data: IJwtPayload): string {
+  generateJwt(data: IJwtPayload): string {
     const token = this.jwtService.sign(data)
     return token
   }

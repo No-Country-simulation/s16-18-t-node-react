@@ -10,8 +10,6 @@ export class CarService {
   constructor(private readonly prisma: PrismaService) {}
   async create(createCarDto: CreateCarDto, user: User) {
     try {
-      const car = await this.findAll(user)
-      if (car.length > 1) throw new ConflictException('Error register car')
       const patent = await this.findForPatent(createCarDto.patent)
       if (patent) throw new ConflictException('this car already exist')
 

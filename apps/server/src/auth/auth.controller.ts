@@ -1,9 +1,11 @@
-import { Controller, Post, Body, Res } from '@nestjs/common'
+import { Controller, Post, Body, Res, Get } from '@nestjs/common'
 import { AuthService } from './auth.service'
 import { CreateUserDto, LoginUserDto } from './dto'
 import { ApiOperation, ApiTags } from '@nestjs/swagger'
 import { Response } from 'express'
 import { WalletsService } from 'src/wallets/wallets.service'
+import { Auth, GetUser } from './decorator'
+import { User } from './interfaces'
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -19,7 +21,13 @@ export class AuthController {
     const { user, token } = await this.authService.create(createUserDto)
     await this.walletsService.createWallet(user.id)
 
-    return res.cookie('access_token', token).send(user)
+    return res
+      .cookie('access_token', token, {
+        sameSite: 'strict',
+        // httpOnly: true,
+        maxAge: 3600000,
+      })
+      .send(user)
   }
 
   @ApiOperation({ description: 'This return an user with their token' })
@@ -28,5 +36,19 @@ export class AuthController {
     const { user, token } = await this.authService.login(loginUserDto)
 
     return res.cookie('access_token', token).send(user)
+  }
+
+  @Get('renew-token')
+  @Auth()
+  renewToken(@Res() res: Response, @GetUser() user: User) {
+    const token = this.authService.generateJwt({ id: user.id })
+
+    return res
+      .cookie('access_token', token, {
+        sameSite: 'strict',
+        // httpOnly: true,
+        maxAge: 3600000,
+      })
+      .send(user)
   }
 }
