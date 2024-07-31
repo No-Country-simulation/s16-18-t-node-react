@@ -1,12 +1,13 @@
 import { Navigate, type RouteObject } from "react-router-dom";
-import { DetailPaymentPage } from '../pages/DetailPaymentPage.tsx'
+
 import { DetailPaymentMethodPage } from "../pages/DetailPaymentMethodPage.tsx";
 import { SuccessPage } from "../pages/SuccessPage.tsx";
+import { DetailPaymentSummaryPage } from "../pages/DetailPaymentSummaryPage.tsx";
 
 export const paymentRouter: RouteObject[] = [
   {
-    index: true,
-    element: <DetailPaymentPage />
+    path: 'summary/:id',
+    element: <DetailPaymentSummaryPage />
   },
   {
     path: 'method',
