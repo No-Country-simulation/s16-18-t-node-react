@@ -9,6 +9,8 @@ import { handleErrorException } from 'src/common/utils'
 import { $Enums } from '@prisma/client'
 import { CreatePreferenceTravelDto } from './dto/preference-travel.dto'
 import { DefaultPreference } from 'src/preferences/enums/default-preference'
+import { PaymentService } from '../payment/payment.service'
+import { PaymentMPDto } from 'src/payment/dto/payment-mp.dto'
 import { RatingsService } from 'src/ratings/ratings.service'
 
 @Injectable()
@@ -16,6 +18,7 @@ export class TravelService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly carService: CarService,
+    private readonly paymentService: PaymentService,
     private readonly ratingService: RatingsService,
   ) {}
 
@@ -51,6 +54,7 @@ export class TravelService {
             preference: true,
           },
         },
+        PassengerTravel: true,
       },
     })
 
@@ -102,7 +106,7 @@ export class TravelService {
     return travel
   }
 
-  async NewPassenger(travelID: string, user: User) {
+  async NewPassenger(paymentMPDto: PaymentMPDto, travelID: string, user: User) {
     try {
       const repitePassenger = await this.findPassengerByID(user.id, travelID)
       if (repitePassenger) {
@@ -117,10 +121,13 @@ export class TravelService {
       const capacity = await this.findDisponibilityTravel(travelID, carID)
       if (capacity === 0) throw new ConflictException('There are no hundreds available')
 
+      const payment = await this.paymentService.paymentMP(paymentMPDto, user)
+
       return await this.prisma.passengerTravel.create({
         data: {
           passengerID: user.id,
           travelID,
+          paymentID: payment.id,
         },
       })
     } catch (error) {
@@ -185,7 +192,7 @@ export class TravelService {
       .catch((e) => handleErrorException(e))
   }
 
-  async cancelleTravelPassenger(user: User, travelID: string) {
+  async cancelTravelPassenger(user: User, travelID: string) {
     const { id } = await this.findPassengerByID(user.id, travelID)
     return this.prisma.passengerTravel.update({
       where: {
@@ -222,12 +229,7 @@ export class TravelService {
       select: {
         passenger: {
           select: {
-            userDetail: {
-              select: {
-                name: true,
-                avatar: true,
-              },
-            },
+            userDetail: true,
           },
         },
       },

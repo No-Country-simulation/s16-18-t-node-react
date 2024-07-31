@@ -1,7 +1,7 @@
 import { Navigate, type RouteObject } from "react-router-dom";
 import { DetailPaymentPage } from '../pages/DetailPaymentPage.tsx'
-import { DetailPaymentMethodPage } from "../pages/DetailPaymentMethodPage.tsx";
 import { SuccessPage } from "../pages/SuccessPage.tsx";
+import { DetailPaymentMethodMPPage } from "../pages/DetailPaymentMethodMPPage.tsx";
 
 export const paymentRouter: RouteObject[] = [
   {
@@ -10,7 +10,7 @@ export const paymentRouter: RouteObject[] = [
   },
   {
     path: 'method',
-    element: <DetailPaymentMethodPage />
+    element: <DetailPaymentMethodMPPage />
   },
   {
     path: 'success',
