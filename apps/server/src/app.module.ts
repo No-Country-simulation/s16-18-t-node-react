@@ -9,6 +9,8 @@ import { TravelModule } from './travel/travel.module'
 import { RatingsModule } from './ratings/ratings.module'
 import { SeedersModule } from './seeders/seeders.module'
 import { PreferencesModule } from './preferences/preferences.module'
+import { PaymentModule } from './payment/payment.module'
+import { WalletsModule } from './wallets/wallets.module'
 
 @Module({
   imports: [
@@ -21,6 +23,8 @@ import { PreferencesModule } from './preferences/preferences.module'
     TravelModule,
     SeedersModule,
     PreferencesModule,
+    PaymentModule,
+    WalletsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
