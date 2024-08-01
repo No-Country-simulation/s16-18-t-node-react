@@ -7,49 +7,49 @@ import { useNavigate } from 'react-router-dom';
 initMercadoPago(MP_PUBLIC_KEY);
 
 
-
-
 export const DetailPaymentMethodMPPage = () => {
-    const navigate = useNavigate();
-    const { price = 500, label = "Car puling viaje", travelID = "f5d3af82-e48a-42ca-804f-08dcb37a6400" } = {};
+	const navigate = useNavigate();
 
-    const onSubmit = async (param: unknown) => {
-        try {
-            await instance.post(`/travel/create-passenger/${travelID}`, param);
-            alert("pago realizado");
-            navigate(paths.home)
-        } catch (error) {
-            alert("Fallo")
-        }
-    }
+	const { price = 500, label = "Car puling viaje", travelID = "f5d3af82-e48a-42ca-804f-08dcb37a6400" } = {};
 
-    return (
-        <Payment
-            initialization={{
-                amount: price,
-                items: {
-                    itemsList: [{
-                        name: label,
-                        units: 1,
-                        value: price
-                    }],
-                    totalItemsAmount: 1
-                },
-            }}
 
-            customization={{
-                paymentMethods: {
-                    debitCard: "all",
-                    creditCard: "all"
-                },
-                visual: {
-                    preserveSavedCardsOrder: true
-                }
+	const onSubmit = async (param: unknown) => {
+		try {
+			await instance.post(`/travel/create-passenger/${travelID}`, param);
+			alert("pago realizado");
+			navigate(paths.home)
+		} catch (error) {
+			alert("Fallo")
+		}
+	}
 
-            }}
-            locale='es'
-            onSubmit={onSubmit}
-        />
+	return (
+		<Payment
+			initialization={{
+				amount: price,
+				items: {
+					itemsList: [{
+						name: label,
+						units: 1,
+						value: price
+					}],
+					totalItemsAmount: 1
+				},
+			}}
 
-    )
+			customization={{
+				paymentMethods: {
+					debitCard: "all",
+					creditCard: "all"
+				},
+				visual: {
+					preserveSavedCardsOrder: true
+				}
+
+			}}
+			locale='es'
+			onSubmit={onSubmit}
+		/>
+
+	)
 }

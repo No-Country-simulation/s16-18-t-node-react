@@ -117,7 +117,7 @@ export const DetailPaymentSummaryPage = () => {
         <hr className="border-b-2 mt-1.5" />
       </div>
 
-      <Link to={`/payment/summary/${id}`} className='bg-tertiary text-base text-white rounded-full flex items-center justify-center py-2'>Continuar al pago</Link>
+      <Link to={`/payment/method`} className='bg-tertiary text-base text-white rounded-full flex items-center justify-center py-2'>Continuar al pago</Link>
     </section>
   )
 }
