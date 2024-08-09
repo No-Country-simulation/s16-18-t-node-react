@@ -1,0 +1,159 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  DEFAULT
+  ADMIN
+}
+
+enum StatePassenger {
+  OK
+  CANCELLED
+}
+
+enum StateTravel {
+  PENDING
+  STARTED
+  COMPLETED
+  CANCELLED
+}
+
+enum GenderUser {
+  MALE
+  FEMALE
+}
+
+model User {
+  id              String            @id @default(uuid())
+  email           String            @unique
+  password        String
+  isActive        Boolean           @default(true)
+  role            Role              @default(DEFAULT)
+  userDetail      UserDetail[]
+  preferenceAlert PreferenceAlert[]
+  car             Car[]
+  ratingsGiven    Rating[]          @relation(name: "DriverRelation")
+  ratingsReceived Rating[]          @relation(name: "PassengerRelation")
+  passengerTravel PassengerTravel[]
+  Payment         Payment[]
+  Wallet          Wallet[]
+}
+
+model UserDetail {
+  id     String     @id @default(uuid())
+  userID String
+  dni    String
+  name   String
+  phone  String
+  gender GenderUser @default(MALE)
+  avatar String?
+
+  user User @relation(fields: [userID], references: [id])
+}
+
+model PreferenceAlert {
+  id          String @id @default(uuid())
+  userID      String
+  origin      String
+  destination String
+
+  user User @relation(fields: [userID], references: [id])
+}
+
+model Car {
+  id               String  @id @default(uuid())
+  userID           String
+  brand            String
+  color            String
+  capacity         Int
+  photo            String
+  patent           String
+  isActive         Boolean @default(true)
+  drivingRecord    String
+  vehicleInsurance String
+
+  user   User     @relation(fields: [userID], references: [id])
+  travel Travel[]
+}
+
+model Rating {
+  id          String @id @default(uuid())
+  driverID    String
+  passengerID String
+  rating      Int
+  review      String
+
+  driver    User @relation(name: "DriverRelation", fields: [driverID], references: [id])
+  passenger User @relation(name: "PassengerRelation", fields: [passengerID], references: [id])
+}
+
+model Travel {
+  id               String             @id @default(uuid())
+  origin           String
+  destination      String
+  startDate        DateTime           @db.Date()
+  hour             DateTime           @db.Time()
+  price            Int                @default(0)
+  isActive         Boolean            @default(true)
+  state            StateTravel        @default(PENDING)
+  PreferenceTravel PreferenceTravel[]
+  carID            String
+  meetingPoint     String
+  description      String
+
+  car             Car               @relation(fields: [carID], references: [id])
+  PassengerTravel PassengerTravel[]
+}
+
+model Preference {
+  id               String             @id @default(uuid())
+  name             String
+  description      String
+  PreferenceTravel PreferenceTravel[]
+}
+
+model PreferenceTravel {
+  id           String  @id @default(uuid())
+  preferenceID String
+  travelID     String
+  state        Boolean @default(true)
+
+  preference Preference @relation(fields: [preferenceID], references: [id])
+  travel     Travel     @relation(fields: [travelID], references: [id])
+}
+
+model PassengerTravel {
+  id          String         @id @default(uuid())
+  passengerID String
+  travelID    String
+  paymentID   String
+  state       StatePassenger @default(OK)
+
+  travel    Travel  @relation(fields: [travelID], references: [id])
+  passenger User    @relation(fields: [passengerID], references: [id])
+  payment   Payment @relation(fields: [paymentID], references: [id])
+}
+
+model Payment {
+  id          String @id @default(uuid())
+  referenceId Int
+  price       Int    @default(0)
+  state       String
+  customerID  String
+
+  user            User              @relation(fields: [customerID], references: [id])
+  PassengerTravel PassengerTravel[]
+}
+
+model Wallet {
+  id     String @id @default(uuid())
+  userID String @unique
+  amount Int    @default(0)
+  user   User   @relation(fields: [userID], references: [id])
+}

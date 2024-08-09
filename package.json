@@ -1,4 +1,7 @@
 {
+  "dependencies": {
+    "@nestjs/mapped-types": "*"
+  },
   "name": "s16-18-t-node-react",
   "private": true,
   "license": "MIT",
